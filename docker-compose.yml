@@ -1,0 +1,73 @@
+name: kege-station
+
+services:
+  postgres-db:
+    container_name: kege-station-postgres
+    image: postgres:18-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DbConfiguration__User}
+      POSTGRES_PASSWORD: ${DbConfiguration__Password}
+      POSTGRES_DB: ${DbConfiguration__Database}
+      PGUSER: ${DbConfiguration__User}
+      PGDATABASE: ${DbConfiguration__Database}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DbConfiguration__User} -d ${DbConfiguration__Database}" ]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    ports:
+      - "6432:5432"
+    volumes:
+      - kege-station-postgres-data:/var/lib/postgresql
+    networks:
+      - kege-station-network
+  
+  kege-station.presentation:
+    image: kege-station.presentation
+    container_name: kege-station-app
+    restart: unless-stopped
+    env_file:
+      - /backend/example.env
+    build:
+      context: ./backend
+      dockerfile: /backend/KEGEstation.Presentation/Dockerfile
+    ports:
+      - "8080:5223"
+    networks:
+      - kege-station-network
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+      s3:
+        condition: service_started
+
+  s3:
+    image: zenko/cloudserver
+    ports:
+      - "8000:8000"
+    environment:
+      - SCALITY_ACCESS_KEY_ID=admin
+      - SCALITY_SECRET_ACCESS_KEY=adminpass
+    volumes:
+      - data:/usr/src/app/localData
+
+  ui:
+    image: cloudlena/s3manager
+    ports:
+      - "8090:8080"
+    environment:
+      - ACCESS_KEY_ID=admin
+      - SECRET_ACCESS_KEY=adminpass
+      - ENDPOINT=s3:8000
+      - USE_SSL=false
+    depends_on:
+      - s3
+
+volumes:
+  data:
+  kege-station-postgres-data:
+
+networks:
+  kege-station-network:
+    driver: bridge

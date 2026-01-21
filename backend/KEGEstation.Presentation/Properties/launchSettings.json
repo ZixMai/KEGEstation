@@ -1,0 +1,50 @@
+﻿{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "httpWithoutSwagger": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5223",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DbConfiguration__Server": "localhost",
+        "DbConfiguration__Port": "6432",
+        "DbConfiguration__User": "postgres",
+        "DbConfiguration__DbConfiguration": "postgres",
+        "DbConfiguration__Password": "postgres",
+        "DbConfiguration__Pooling": "true",
+        "DbConfiguration__MinPoolSize": "10",
+        "DbConfiguration__MaxPoolSize": "100",
+        "DbConfiguration__CommandTimeout": "5"
+      }
+    },
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger/index.html",
+      "applicationUrl": "http://localhost:5223",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DbConfiguration__Server": "localhost",
+        "DbConfiguration__Port": "6432",
+        "DbConfiguration__User": "postgres",
+        "DbConfiguration__DbConfiguration": "postgres",
+        "DbConfiguration__Password": "postgres",
+        "DbConfiguration__Pooling": "true",
+        "DbConfiguration__MinPoolSize": "10",
+        "DbConfiguration__MaxPoolSize": "100",
+        "DbConfiguration__CommandTimeout": "5"
+      }
+    },
+    "https": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "https://localhost:7298;http://localhost:5223",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

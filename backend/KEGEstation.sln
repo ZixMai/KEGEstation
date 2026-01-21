@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KEGEstation.Presentation", "KEGEstation.Presentation\KEGEstation.Presentation.csproj", "{6EFF9CD8-E1DF-4030-BB78-D21A78A05B4D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5B71F4DE-ED06-4393-B99E-71B7B1D97F83}"
+	ProjectSection(SolutionItems) = preProject
+		example.env = example.env
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KEGEstation.Domain", "KEGEstation.Domain\KEGEstation.Domain.csproj", "{436A03BD-CB20-4E38-B187-C41F2AC73A56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KEGEstation.Application", "KEGEstation.Application\KEGEstation.Application.csproj", "{89C6AC48-4A9D-49F4-BBAC-B79A01063BDC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KEGE.Infrastructure", "KEGE.Infrastructure\KEGE.Infrastructure.csproj", "{0170DA95-AA1E-4BD8-95BE-8817668C3E63}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6EFF9CD8-E1DF-4030-BB78-D21A78A05B4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EFF9CD8-E1DF-4030-BB78-D21A78A05B4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EFF9CD8-E1DF-4030-BB78-D21A78A05B4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EFF9CD8-E1DF-4030-BB78-D21A78A05B4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{436A03BD-CB20-4E38-B187-C41F2AC73A56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{436A03BD-CB20-4E38-B187-C41F2AC73A56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{436A03BD-CB20-4E38-B187-C41F2AC73A56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{436A03BD-CB20-4E38-B187-C41F2AC73A56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89C6AC48-4A9D-49F4-BBAC-B79A01063BDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89C6AC48-4A9D-49F4-BBAC-B79A01063BDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89C6AC48-4A9D-49F4-BBAC-B79A01063BDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89C6AC48-4A9D-49F4-BBAC-B79A01063BDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0170DA95-AA1E-4BD8-95BE-8817668C3E63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0170DA95-AA1E-4BD8-95BE-8817668C3E63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0170DA95-AA1E-4BD8-95BE-8817668C3E63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0170DA95-AA1E-4BD8-95BE-8817668C3E63}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
