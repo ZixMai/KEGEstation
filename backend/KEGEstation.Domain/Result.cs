@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace KEGEstation.Domain;
 
 public class Result
@@ -10,7 +12,7 @@ public class Result
     
     public short ResultValue { get; set; } = 0;
     
-    public List<string> Metadata { get; set; } = [];
+    public JsonElement? Metadata { get; set; }
     
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }

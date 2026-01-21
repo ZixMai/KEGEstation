@@ -74,8 +74,7 @@ namespace KEGEstation.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<long>("Id"));
 
-                    b.PrimitiveCollection<string>("Answer")
-                        .IsRequired()
+                    b.Property<JsonElement>("Answer")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("jsonb")
                         .HasColumnName("answer")
@@ -143,8 +142,7 @@ namespace KEGEstation.Infrastructure.Migrations
                         .HasColumnName("created_at")
                         .HasDefaultValueSql("now()");
 
-                    b.PrimitiveCollection<string>("Metadata")
-                        .IsRequired()
+                    b.Property<JsonElement?>("Metadata")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("jsonb")
                         .HasColumnName("metadata")

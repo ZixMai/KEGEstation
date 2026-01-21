@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace KEGEstation.Infrastructure.Migrations
 {
     [DbContext(typeof(DbContext))]
-    [Migration("20260121113948_Initial")]
+    [Migration("20260121131521_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -77,8 +77,7 @@ namespace KEGEstation.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<long>("Id"));
 
-                    b.PrimitiveCollection<string>("Answer")
-                        .IsRequired()
+                    b.Property<JsonElement>("Answer")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("jsonb")
                         .HasColumnName("answer")
@@ -146,8 +145,7 @@ namespace KEGEstation.Infrastructure.Migrations
                         .HasColumnName("created_at")
                         .HasDefaultValueSql("now()");
 
-                    b.PrimitiveCollection<string>("Metadata")
-                        .IsRequired()
+                    b.Property<JsonElement?>("Metadata")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("jsonb")
                         .HasColumnName("metadata")

@@ -68,7 +68,7 @@ namespace KEGEstation.Infrastructure.Migrations
                     image_s3_keys = table.Column<string>(type: "jsonb", nullable: false, defaultValueSql: "'[]'::jsonb"),
                     file_s3_keys = table.Column<string>(type: "jsonb", nullable: false, defaultValueSql: "'[]'::jsonb"),
                     number = table.Column<short>(type: "smallint", nullable: true),
-                    answer = table.Column<string>(type: "jsonb", nullable: false, defaultValueSql: "'[]'::jsonb"),
+                    answer = table.Column<JsonElement>(type: "jsonb", nullable: false, defaultValueSql: "'[]'::jsonb"),
                     answer_columns_size = table.Column<short>(type: "smallint", nullable: false, defaultValue: (short)1),
                     answer_rows_size = table.Column<short>(type: "smallint", nullable: false, defaultValue: (short)1)
                 },
@@ -90,7 +90,7 @@ namespace KEGEstation.Infrastructure.Migrations
                     kim_id = table.Column<long>(type: "bigint", nullable: false),
                     user_id = table.Column<long>(type: "bigint", nullable: false),
                     result = table.Column<short>(type: "smallint", nullable: false, defaultValue: (short)0),
-                    metadata = table.Column<string>(type: "jsonb", nullable: false, defaultValueSql: "'[]'::jsonb"),
+                    metadata = table.Column<JsonElement>(type: "jsonb", nullable: true, defaultValueSql: "'[]'::jsonb"),
                     created_at = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValueSql: "now()"),
                     updated_at = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValueSql: "now()")
                 },

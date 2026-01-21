@@ -1,4 +1,6 @@
 using System.Text.Json;
+using Amazon.S3;
+using Amazon.S3.Model;
 using KEGEstation.Application.Abstractions;
 using KEGEstation.Domain;
 using KEGEstation.Presentation.Groups;
@@ -8,9 +10,10 @@ using FluentValidation;
 namespace KEGEstation.Presentation.Endpoints.Features.Kim;
 
 
-public class RegisterEndpoint(
+public class GetEndpoint(
     IUserRepository userRepository,
-    IKimRepository kimRepository
+    IKimRepository kimRepository,
+    IAmazonS3 s3Client
 ) : Endpoint<GetKimRequest, GetKimResponse>
 {
     public override void Configure()
@@ -40,7 +43,7 @@ public class RegisterEndpoint(
     public override async Task HandleAsync(GetKimRequest req, CancellationToken ct)
     {
         var user = new User{ UserFirstName = req.FirstName, UserName = req.Name, Contacts = req.Contacts };
-        await userRepository.CreateAsync(user, ct);
+        user = await userRepository.CreateAsync(user, ct);
         
         var kim = await kimRepository.GetByIdWithTasksAsync(req.KimId, ct);
         if (kim == null)
@@ -49,7 +52,21 @@ public class RegisterEndpoint(
             await Send.NotFoundAsync(ct);
             return;
         }
-        await Send.OkAsync(new GetKimResponse(Kim: kim), ct);
+
+        var images = new List<string>();
+        foreach (var key in kim.Tasks.SelectMany(task => task.ImageS3Keys).ToList())
+        {
+            var response = await s3Client.GetObjectAsync(new GetObjectRequest
+            {
+                Key = key
+            }, ct);
+            
+            using var memoryStream = new MemoryStream();
+            await response.ResponseStream.CopyToAsync(memoryStream, ct);
+            images.Add(Convert.ToBase64String(memoryStream.ToArray()));
+        }
+        
+        await Send.OkAsync(new GetKimResponse(Kim: kim, User: user, Base64Images: images), ct);
     }
 }
 
@@ -61,5 +78,7 @@ public sealed record GetKimRequest(
 );
 
 public sealed record GetKimResponse(
-    Domain.Kim Kim
+    Domain.Kim Kim,
+    User User,
+    List<string> Base64Images
 );
