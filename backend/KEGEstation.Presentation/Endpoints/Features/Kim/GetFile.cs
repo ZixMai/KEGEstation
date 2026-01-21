@@ -21,7 +21,7 @@ public class GetFileEndpoint(
         AllowAnonymous();
 
         Description(b => b
-            .WithName("Get")
+            .WithName("GetFile")
             .WithTags(RouteGroups.Kim));
     }
 
