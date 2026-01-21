@@ -35,7 +35,11 @@ public class KimConfiguration : IEntityTypeConfiguration<Kim>
             .HasColumnType("timestamp without time zone")
             .HasDefaultValueSql("now()")
             .IsRequired();
-
+        
+        builder.Property(k => k.UnlockCode)
+            .HasColumnName("unlock_code")
+            .HasColumnType("text");
+        
         // Index on FK
         builder.HasIndex(k => k.CreatorId)
             .HasDatabaseName("ix_kims_creator_id");

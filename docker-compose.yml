@@ -49,6 +49,8 @@ services:
     environment:
       - SCALITY_ACCESS_KEY_ID=admin
       - SCALITY_SECRET_ACCESS_KEY=adminpass
+    networks:
+      - kege-station-network
     volumes:
       - data:/usr/src/app/localData
 
@@ -61,6 +63,8 @@ services:
       - SECRET_ACCESS_KEY=adminpass
       - ENDPOINT=s3:8000
       - USE_SSL=false
+    networks:
+      - kege-station-network
     depends_on:
       - s3
 

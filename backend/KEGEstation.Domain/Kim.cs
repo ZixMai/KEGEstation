@@ -11,6 +11,7 @@ public class Kim
     
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
+    public string UnlockCode { get; set; } = "MAI8";
     
     // Navigation properties
     public List<KimTask> Tasks { get; set; } = [];

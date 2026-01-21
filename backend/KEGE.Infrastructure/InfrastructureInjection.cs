@@ -3,6 +3,7 @@ using KEGEstation.Infrastructure.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace KEGEstation.Infrastructure;
 
@@ -12,9 +13,13 @@ public static class InfrastructureInjection
     {
         var config = configuration.GetRequiredSection(nameof(DbConfiguration)).Get<DbConfiguration>();
 
+        var dataSourceBuilder = new NpgsqlDataSourceBuilder(config!.CreateConnectionString());
+        dataSourceBuilder.EnableDynamicJson();
+        var dataSource = dataSourceBuilder.Build();
+
         services.AddDbContext<DbContext>(options =>
         {
-            options.UseNpgsql(config!.CreateConnectionString());
+            options.UseNpgsql(dataSource);
         });
         
         services.AddScoped<IUserRepository, UserRepository>();

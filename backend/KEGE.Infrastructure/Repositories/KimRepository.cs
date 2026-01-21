@@ -15,6 +15,7 @@ public class KimRepository(DbContext context) : IKimRepository
     {
         return await context.Kims
             .Include(k => k.Tasks.OrderBy(t => t.Number))
+            .Include(k => k.Creator)
             .FirstOrDefaultAsync(k => k.Id == id, ct);
     }
 

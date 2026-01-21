@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace KEGEstation.Domain;
 
 public class User
@@ -8,7 +10,7 @@ public class User
     public string UserFirstName { get; set; } = string.Empty;
     public string UserName { get; set; } = string.Empty;
     
-    public List<string> Contacts { get; set; } = [];
+    public JsonElement? Contacts { get; set; }
     
     public string Role { get; set; } = nameof(Domain.Role.STUDENT);
     public bool IsDeleted { get; set; } = false;
