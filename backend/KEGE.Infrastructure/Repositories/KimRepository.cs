@@ -22,7 +22,7 @@ public class KimRepository(DbContext context) : IKimRepository
 
     public async Task<List<Kim>> GetAllAsync(CancellationToken ct = default)
     {
-        return await context.Kims.ToListAsync(ct);
+        return await context.Kims.Include(k => k.Creator).ToListAsync(ct);
     }
 
     public async Task<List<Kim>> GetByCreatorIdAsync(long creatorId, CancellationToken ct = default)

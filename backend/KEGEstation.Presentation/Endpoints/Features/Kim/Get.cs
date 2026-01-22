@@ -72,7 +72,6 @@ public class GetEndpoint(
             new GetKimResponse(
                 Id: kim.Id,
                 CreatorId: kim.CreatorId,
-                Creator: kim.Creator,
                 Description: kim.Description,
                 CreatedAt: kim.CreatedAt,
                 UpdatedAt: kim.UpdatedAt,
@@ -94,7 +93,6 @@ public sealed record GetKimRequest(
 public sealed record GetKimResponse(
     long Id,
     long CreatorId,
-    User Creator,
     string? Description,
     DateTime CreatedAt,
     DateTime UpdatedAt,

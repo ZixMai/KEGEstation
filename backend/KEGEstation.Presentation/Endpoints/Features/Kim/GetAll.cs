@@ -1,0 +1,55 @@
+using System.Text.Json;
+using Amazon.S3;
+using Amazon.S3.Model;
+using FastEndpoints;
+using FluentValidation;
+using KEGEstation.Application.Abstractions;
+using KEGEstation.Domain;
+using KEGEstation.Presentation.Groups;
+
+namespace KEGEstation.Presentation.Endpoints.Features.Kim;
+
+public class GetAllEndpoint(
+    IKimRepository kimRepository,
+    IAmazonS3 s3Client
+) : EndpointWithoutRequest<GetAllKimResponse>
+{
+    public override void Configure()
+    {
+        Post("/getAll");
+        Group<KimGroup>();
+        AllowAnonymous();
+        
+        Description(b => b
+            .WithName("GetAll")
+            .WithTags(RouteGroups.Kim)
+            .Produces<GetKimResponse>());
+    }
+
+    public override async Task HandleAsync(CancellationToken ct)
+    {
+        var kims = await kimRepository.GetAllAsync(ct);
+        
+        await Send.OkAsync(
+            new GetAllKimResponse(
+                Kims: kims.Select(kim =>
+                    new GetAllKimResponseUnit(
+                        Id: kim.Id,
+                        CreatorId: kim.CreatorId,
+                        Creator: $"{kim.Creator.UserFirstName} {kim.Creator.UserName} ({kim.Creator.Id})",
+                        Description: kim.Description,
+                        CreatedAt: kim.CreatedAt)
+                    ).ToList()), 
+            ct);
+    }
+}
+
+public sealed record GetAllKimResponseUnit(
+    long Id,
+    long CreatorId,
+    string Creator,
+    string? Description,
+    DateTime CreatedAt
+);
+
+public sealed record GetAllKimResponse(List<GetAllKimResponseUnit> Kims);

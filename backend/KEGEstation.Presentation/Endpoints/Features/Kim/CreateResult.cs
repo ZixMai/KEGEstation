@@ -16,7 +16,7 @@ public class CreateResultEndpoint(
 {
     public override void Configure()
     {
-        Post("/create-result");
+        Post("/createResult");
         Group<KimGroup>();
         AllowAnonymous();
         
