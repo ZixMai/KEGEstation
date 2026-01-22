@@ -2,7 +2,7 @@ name: kege-station
 
 services:
   postgres-db:
-    container_name: kege-station-postgres
+    container_name: postgres
     image: postgres:18-alpine
     restart: unless-stopped
     environment:

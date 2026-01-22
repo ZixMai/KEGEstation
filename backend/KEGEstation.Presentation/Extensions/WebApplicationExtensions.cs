@@ -75,7 +75,7 @@ public static class WebApplicationExtensions
             c.Endpoints.RoutePrefix = "api/v1";
             c.Serializer.Options.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
             c.Serializer.Options.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-            c.Binding.UsePropertyNamingPolicy = true;
+            c.Binding.UsePropertyNamingPolicy = false;
 
             c.Endpoints.Configurator = ep =>
             {

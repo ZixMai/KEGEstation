@@ -16,7 +16,7 @@ public class GetFileEndpoint(
 {
     public override void Configure()
     {
-        Post("/getFile");
+        Get("/getFile/{S3Key}");
         Group<KimGroup>();
         AllowAnonymous();
 
@@ -42,6 +42,4 @@ public class GetFileEndpoint(
     }
 }
 
-public sealed record GetFileRequest(
-    string S3Key
-);
+public sealed record GetFileRequest(string S3Key);
