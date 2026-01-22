@@ -1,6 +1,8 @@
 using System.Text.Json;
 using Amazon.S3;
 using Amazon.S3.Model;
+using Facet;
+using Facet.Extensions;
 using KEGEstation.Application.Abstractions;
 using KEGEstation.Domain;
 using KEGEstation.Presentation.Groups;
@@ -58,6 +60,7 @@ public class GetEndpoint(
         {
             var response = await s3Client.GetObjectAsync(new GetObjectRequest
             {
+                BucketName = "files",
                 Key = key
             }, ct);
             
@@ -65,7 +68,9 @@ public class GetEndpoint(
             await response.ResponseStream.CopyToAsync(memoryStream, ct);
             images.Add(Convert.ToBase64String(memoryStream.ToArray()));
         }
-        
+
+        kim.Creator.CreatedTasks = [];
+        kim.Creator.CreatedKims = [];
         await Send.OkAsync(new GetKimResponse(Kim: kim, User: user, Base64Images: images), ct);
     }
 }

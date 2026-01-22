@@ -6,8 +6,8 @@ public class KimTask
 {
     public long Id { get; set; }
     
-    public long KimId { get; set; }
-    public Kim Kim { get; set; } = null!;
+    public long CreatorId { get; set; }
+    public User Creator { get; set; }
     
     public string? Description { get; set; }
     
@@ -16,7 +16,9 @@ public class KimTask
     
     public short? Number { get; set; }
     
-    public JsonElement Answer { get; set; }
+    public string Answer { get; set; }
     public short AnswerColumnsSize { get; set; } = 1;
     public short AnswerRowsSize { get; set; } = 1;
+
+    public List<KimToTask> KimsForTask { get; set; } = [];
 }

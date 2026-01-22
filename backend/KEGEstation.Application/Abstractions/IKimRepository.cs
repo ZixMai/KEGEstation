@@ -9,6 +9,7 @@ public interface IKimRepository
     Task<List<Kim>> GetAllAsync(CancellationToken ct = default);
     Task<List<Kim>> GetByCreatorIdAsync(long creatorId, CancellationToken ct = default);
     Task<Kim> CreateAsync(Kim kim, CancellationToken ct = default);
+    Task LinkTasksToKimAsync(List<KimToTask> kimToTasks, CancellationToken ct = default);
     Task<Kim> UpdateAsync(Kim kim, CancellationToken ct = default);
     Task DeleteAsync(long id, CancellationToken ct = default);
 }

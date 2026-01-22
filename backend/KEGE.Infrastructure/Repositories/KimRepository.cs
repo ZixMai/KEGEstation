@@ -36,6 +36,12 @@ public class KimRepository(DbContext context) : IKimRepository
         return kim;
     }
 
+    public async Task LinkTasksToKimAsync(List<KimToTask> kimToTasks, CancellationToken ct = default)
+    {
+        await context.KimToTasks.AddRangeAsync(kimToTasks, ct);
+        await context.SaveChangesAsync(ct);
+    }
+
     public async Task<Kim> UpdateAsync(Kim kim, CancellationToken ct = default)
     {
         kim.UpdatedAt = DateTime.UtcNow;

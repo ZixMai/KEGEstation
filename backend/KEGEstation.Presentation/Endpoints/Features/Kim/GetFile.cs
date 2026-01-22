@@ -29,7 +29,8 @@ public class GetFileEndpoint(
     {
         var response = await s3Client.GetObjectAsync(new GetObjectRequest
         {
-            Key = req.S3Key
+            Key = req.S3Key,
+            BucketName = "files"
         }, ct);
 
         await Send.StreamAsync(

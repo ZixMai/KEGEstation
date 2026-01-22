@@ -22,5 +22,6 @@ public class User
     
     // Navigation properties
     public List<Kim> CreatedKims { get; set; } = [];
+    public List<KimTask> CreatedTasks { get; set; } = [];
     public List<Result> Results { get; set; } = [];
 }

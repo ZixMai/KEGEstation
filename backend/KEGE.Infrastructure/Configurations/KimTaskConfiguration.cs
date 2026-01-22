@@ -16,8 +16,8 @@ public class KimTaskConfiguration : IEntityTypeConfiguration<KimTask>
             .HasColumnName("id")
             .UseIdentityAlwaysColumn();
 
-        builder.Property(t => t.KimId)
-            .HasColumnName("kim_id")
+        builder.Property(t => t.CreatorId)
+            .HasColumnName("creator_id")
             .IsRequired();
 
         builder.Property(t => t.Description)
@@ -59,13 +59,18 @@ public class KimTaskConfiguration : IEntityTypeConfiguration<KimTask>
             .IsRequired();
 
         // Index on FK
-        builder.HasIndex(t => t.KimId)
-            .HasDatabaseName("ix_kim_tasks_kim_id");
+        builder.HasIndex(t => t.CreatorId)
+            .HasDatabaseName("ix_kim_tasks_creator_id");
 
         // Relationships
-        builder.HasOne(t => t.Kim)
-            .WithMany(k => k.Tasks)
-            .HasForeignKey(t => t.KimId)
+        builder.HasOne(t => t.Creator)
+            .WithMany(k => k.CreatedTasks)
+            .HasForeignKey(t => t.CreatorId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.HasMany(x => x.KimsForTask)
+            .WithOne(x => x.Task)
+            .HasForeignKey(x => x.TaskId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

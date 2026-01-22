@@ -11,14 +11,6 @@ public class KimTaskRepository(DbContext context) : IKimTaskRepository
         return await context.KimTasks.FirstOrDefaultAsync(t => t.Id == id, ct);
     }
 
-    public async Task<List<KimTask>> GetByKimIdAsync(long kimId, CancellationToken ct = default)
-    {
-        return await context.KimTasks
-            .Where(t => t.KimId == kimId)
-            .OrderBy(t => t.Number)
-            .ToListAsync(ct);
-    }
-
     public async Task<KimTask> CreateAsync(KimTask task, CancellationToken ct = default)
     {
         context.KimTasks.Add(task);

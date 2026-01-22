@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Amazon.Extensions.NETCore.Setup;
+using Amazon.Runtime;
 using Amazon.S3;
 using KEGEstation.Application;
 using KEGEstation.Application.Services;
@@ -27,14 +28,22 @@ public static class ServiceCollectionExtensions
         services.ConfigureOTel(configuration);
 
         var s3Config = configuration.GetSection(nameof(S3Configuration)).Get<S3Configuration>()!;
-        services.AddAWSService<IAmazonS3>(new AWSOptions
+        services.AddSingleton<IAmazonS3>(sp =>
         {
-            Credentials = new Amazon.Runtime.BasicAWSCredentials(
-                s3Config.User,
-                s3Config.Password
-            ),
-            DefaultClientConfig = { ServiceURL = s3Config.ServiceUrl }
+            var config = new AmazonS3Config
+            {
+                ServiceURL = s3Config.ServiceUrl,
+                ForcePathStyle = true,
+                SignatureMethod = SigningAlgorithm.HmacSHA256,
+                AuthenticationRegion = "us-east-1"
+            };
+    
+            return new AmazonS3Client(
+                new BasicAWSCredentials(s3Config.User, s3Config.Password),
+                config
+            );
         });
+        
         services.RegisterInfrastructure(configuration);
 
         services.AddCors();

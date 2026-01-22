@@ -24,14 +24,13 @@ services:
       - kege-station-network
   
   kege-station.presentation:
-    image: kege-station.presentation
     container_name: kege-station-app
     restart: unless-stopped
     env_file:
-      - /backend/example.env
+      - ./backend/example.env
     build:
       context: ./backend
-      dockerfile: /backend/KEGEstation.Presentation/Dockerfile
+      dockerfile: KEGEstation.Presentation/Dockerfile
     ports:
       - "8080:5223"
     networks:
@@ -40,36 +39,31 @@ services:
       postgres-db:
         condition: service_healthy
       s3:
-        condition: service_started
+        condition: service_healthy
 
   s3:
-    image: zenko/cloudserver
+    image: minio/minio:latest
+    container_name: kege-station-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
     ports:
-      - "8000:8000"
+      - "9000:9000"  # S3 API
+      - "9001:9001"  # Web Console
     environment:
-      - SCALITY_ACCESS_KEY_ID=admin
-      - SCALITY_SECRET_ACCESS_KEY=adminpass
-    networks:
-      - kege-station-network
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: adminpass
+    healthcheck:
+      test: [ "CMD", "mc", "ready", "local" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     volumes:
-      - data:/usr/src/app/localData
-
-  ui:
-    image: cloudlena/s3manager
-    ports:
-      - "8090:8080"
-    environment:
-      - ACCESS_KEY_ID=admin
-      - SECRET_ACCESS_KEY=adminpass
-      - ENDPOINT=s3:8000
-      - USE_SSL=false
+      - minio-data:/data
     networks:
       - kege-station-network
-    depends_on:
-      - s3
 
 volumes:
-  data:
+  minio-data:
   kege-station-postgres-data:
 
 networks:

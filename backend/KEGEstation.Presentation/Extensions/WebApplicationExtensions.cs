@@ -1,14 +1,55 @@
 using System.Security.Claims;
 using System.Text.Json;
+using Amazon.S3;
+using Amazon.S3.Model;
+using Amazon.S3.Util;
 using KEGEstation.Presentation.Middlewares;
 using FastEndpoints;
 using FastEndpoints.Swagger;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Serilog;
+using DbContext = KEGEstation.Infrastructure.DbContext;
 
 namespace KEGEstation.Presentation.Extensions;
 
 public static class WebApplicationExtensions
 {
+    public static async Task<WebApplication> ApplyMigrationsAsync(this WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        
+        try
+        {
+            var dbContext = scope.ServiceProvider.GetRequiredService<DbContext>();
+            var logger = scope.ServiceProvider.GetRequiredService<ILogger<DbContext>>();
+            
+            logger.LogInformation("Applying database migrations...");
+            await dbContext.Database.MigrateAsync();
+            logger.LogInformation("Database migrations applied successfully");
+        }
+        catch (Exception ex)
+        {
+            var logger = scope.ServiceProvider.GetRequiredService<ILogger<DbContext>>();
+            logger.LogError(ex, "An error occurred while migrating the database");
+            throw;
+        }
+
+        var s3Client = scope.ServiceProvider.GetRequiredService<IAmazonS3>();
+        var exists = await AmazonS3Util.DoesS3BucketExistV2Async(s3Client, "files");
+
+        if (exists) { return app; }
+
+        var putRequest = new PutBucketRequest
+        {
+            BucketName = "files",
+            UseClientRegion = true
+        };
+        await s3Client.PutBucketAsync(putRequest);
+        
+        return app;
+    }
+    
     public static WebApplication ConfigureHttpPipeline(
         this WebApplication app,
         IWebHostEnvironment env)

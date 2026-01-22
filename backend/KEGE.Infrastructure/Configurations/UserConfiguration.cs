@@ -50,7 +50,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         
         builder.Property(u => u.PasswordHash)
             .HasColumnName("password_hash")
-            .IsRequired()
             .HasMaxLength(200);
 
         builder.Property(u => u.CreatedAt)

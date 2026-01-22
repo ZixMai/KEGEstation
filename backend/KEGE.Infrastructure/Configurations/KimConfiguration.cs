@@ -49,5 +49,10 @@ public class KimConfiguration : IEntityTypeConfiguration<Kim>
             .WithMany(u => u.CreatedKims)
             .HasForeignKey(k => k.CreatorId)
             .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.HasMany(x => x.TasksForKim)
+            .WithOne(x => x.Kim)
+            .HasForeignKey(x => x.KimId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
