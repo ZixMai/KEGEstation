@@ -14,7 +14,8 @@ public class KimRepository(DbContext context) : IKimRepository
     public async Task<Kim?> GetByIdWithTasksAsync(long id, CancellationToken ct = default)
     {
         return await context.Kims
-            .Include(k => k.Tasks.OrderBy(t => t.Number))
+            .Include(k => k.TasksForKim)
+            .ThenInclude(t => t.Task)
             .Include(k => k.Creator)
             .FirstOrDefaultAsync(k => k.Id == id, ct);
     }

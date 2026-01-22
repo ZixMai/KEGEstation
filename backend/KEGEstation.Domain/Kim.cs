@@ -14,7 +14,6 @@ public class Kim
     public string UnlockCode { get; set; } = "MAI8";
     
     // Navigation properties
-    public List<KimTask> Tasks { get; set; } = [];
     public List<Result> Results { get; set; } = [];
     public List<KimToTask> TasksForKim { get; set; } = [];
 }

@@ -54,7 +54,7 @@ public class GetEndpoint(
         }
 
         var images = new List<string>();
-        foreach (var key in kim.Tasks.SelectMany(task => task.ImageS3Keys).ToList())
+        foreach (var key in kim.TasksForKim.SelectMany(task => task.Task.ImageS3Keys).ToList())
         {
             var response = await s3Client.GetObjectAsync(new GetObjectRequest
             {
@@ -67,9 +67,20 @@ public class GetEndpoint(
             images.Add(Convert.ToBase64String(memoryStream.ToArray()));
         }
 
-        kim.Creator.CreatedTasks = [];
-        kim.Creator.CreatedKims = [];
-        await Send.OkAsync(new GetKimResponse(Kim: kim, User: user, Base64Images: images), ct);
+        
+        await Send.OkAsync(
+            new GetKimResponse(
+                Id: kim.Id,
+                CreatorId: kim.CreatorId,
+                Creator: kim.Creator,
+                Description: kim.Description,
+                CreatedAt: kim.CreatedAt,
+                UpdatedAt: kim.UpdatedAt,
+                UnlockCode: kim.UnlockCode,
+                TasksForKim: kim.TasksForKim.Select(task => task.Task).ToList(),
+                User: user, 
+                Base64Images: images),
+        ct);
     }
 }
 
@@ -81,7 +92,14 @@ public sealed record GetKimRequest(
 );
 
 public sealed record GetKimResponse(
-    Domain.Kim Kim,
+    long Id,
+    long CreatorId,
+    User Creator,
+    string? Description,
+    DateTime CreatedAt,
+    DateTime UpdatedAt,
+    string UnlockCode,
+    List<KimTask> TasksForKim,
     User User,
     List<string> Base64Images
 );
