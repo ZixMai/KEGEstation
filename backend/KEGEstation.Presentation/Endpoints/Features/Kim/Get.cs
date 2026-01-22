@@ -76,7 +76,13 @@ public class GetEndpoint(
                 CreatedAt: kim.CreatedAt,
                 UpdatedAt: kim.UpdatedAt,
                 UnlockCode: kim.UnlockCode,
-                TasksForKim: kim.TasksForKim.Select(task => task.Task).ToList(),
+                TasksForKim: kim.TasksForKim.Select(task =>
+                {
+                    var linkedTask = task.Task;
+                    linkedTask.Creator = null!;
+                    linkedTask.KimsForTask = [];
+                    return linkedTask;
+                }).ToList(),
                 User: user, 
                 Base64Images: images),
         ct);
