@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Util;
@@ -74,6 +75,7 @@ public static class WebApplicationExtensions
             c.Endpoints.RoutePrefix = "api/v1";
             c.Serializer.Options.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
             c.Serializer.Options.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            c.Binding.UsePropertyNamingPolicy = true;
 
             c.Endpoints.Configurator = ep =>
             {
