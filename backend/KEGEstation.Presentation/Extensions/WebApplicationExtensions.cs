@@ -73,7 +73,7 @@ public static class WebApplicationExtensions
         {
             c.Security.RoleClaimType = ClaimTypes.Role;
             c.Endpoints.RoutePrefix = "api/v1";
-            c.Serializer.Options.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
+            c.Serializer.Options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             c.Serializer.Options.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             c.Binding.UsePropertyNamingPolicy = false;
 

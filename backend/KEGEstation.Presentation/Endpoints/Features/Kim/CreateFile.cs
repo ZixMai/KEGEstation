@@ -45,7 +45,7 @@ public class CreateFileEndpoint(
 
 public sealed class CreateFileRequest
 {
-    [BindFrom("s3_key")]
+    [BindFrom("s3Key")]
     public string S3Key { get; set; }
     public IFormFile File { get; set; }
 }
