@@ -1,8 +1,6 @@
 using System.Text.Json;
 using Amazon.S3;
 using Amazon.S3.Model;
-using Facet;
-using Facet.Extensions;
 using KEGEstation.Application.Abstractions;
 using KEGEstation.Domain;
 using KEGEstation.Presentation.Groups;
