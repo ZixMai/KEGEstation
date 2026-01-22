@@ -23,7 +23,7 @@ public class GetAllEndpoint(
         Description(b => b
             .WithName("GetAll")
             .WithTags(RouteGroups.Kim)
-            .Produces<GetKimResponse>());
+            .Produces<GetAllKimResponse>());
     }
 
     public override async Task HandleAsync(CancellationToken ct)
@@ -36,10 +36,10 @@ public class GetAllEndpoint(
                     new GetAllKimResponseUnit(
                         Id: kim.Id,
                         CreatorId: kim.CreatorId,
-                        Creator: $"{kim.Creator.UserFirstName} {kim.Creator.UserName} ({kim.Creator.Id})",
+                        Creator: $"{kim.Creator.UserFirstName} {kim.Creator.UserName} ({kim.Creator.Login})",
                         Description: kim.Description,
                         CreatedAt: kim.CreatedAt)
-                    ).ToList()), 
+                    ).OrderByDescending(k => k.CreatedAt).ToList()), 
             ct);
     }
 }
