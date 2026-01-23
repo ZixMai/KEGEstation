@@ -27,7 +27,7 @@ export function ExamNav() {
 
   if (!kimData) return null;
 
-  const answeredCount = kimData.tasks.filter((t) => t.answer !== "").length;
+  const answeredCount = kimData.tasksForKim.filter((t) => t.userAnswer !== "").length;
 
   const handleScroll = (direction: "up" | "down") => {
     if (navRef.current) {
@@ -37,12 +37,12 @@ export function ExamNav() {
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full items-center">
       {/* Answered count */}
       <div className="flex flex-col items-center p-3 border-b">
         <p className="text-xs font-semibold text-muted-foreground">Дано ответов</p>
         <p className="text-2xl font-bold">
-          {answeredCount}/{kimData.tasks.length}
+          {answeredCount}/{kimData.tasksForKim.length}
         </p>
       </div>
 
@@ -51,7 +51,7 @@ export function ExamNav() {
         variant="outline"
         size="sm"
         onClick={() => handleScroll("up")}
-        className="shrink-0 m-2 mb-1 bg-blue-400  hover:bg-blue-300  text-white"
+        className="shrink-0 m-2 mb-1 bg-blue-400  hover:bg-blue-300  text-white w-12 h-12"
       >
           <ArrowUp />
       </Button>
@@ -66,7 +66,7 @@ export function ExamNav() {
           variant="outline"
           size="sm"
           className={cn(
-            "shrink-0 w-full h-12",
+            "shrink-0 h-12 w-12",
             index === null && "bg-primary text-primary-foreground"
           )}
           onClick={() => setIndex(null)}
@@ -74,14 +74,14 @@ export function ExamNav() {
           i
         </Button>
 
-        {kimData.tasks.map((task, i) => (
+        {kimData.tasksForKim.map((task, i) => (
           <Button
             key={i}
             variant="outline"
             size="sm"
             className={cn(
-              "shrink-0 w-full h-12",
-              task.answer && task.answer.length > 0
+              "shrink-0 w-12 h-12",
+              task.userAnswer && task.userAnswer.length > 0
                 ? "border-2 border-green-600"
                 : "bg-background",
               index === i && "ring-2 ring-primary"
@@ -92,7 +92,7 @@ export function ExamNav() {
                 }
             }}
           >
-            {task.number}
+            {task.number + 1}
           </Button>
         ))}
       </div>
@@ -102,7 +102,7 @@ export function ExamNav() {
         variant="outline"
         size="sm"
         onClick={() => handleScroll("down")}
-        className="shrink-0 m-2 mt-1 bg-blue-400  hover:bg-blue-300  text-white"
+        className="shrink-0 m-2 mt-1 bg-blue-400  hover:bg-blue-300  text-white h-12 w-12"
       >
           <ArrowDown />
       </Button>

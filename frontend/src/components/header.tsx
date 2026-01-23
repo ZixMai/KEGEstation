@@ -8,7 +8,7 @@ export function Header() {
       <div className="flex items-center gap-4">
         <h1 className="text-2xl font-bold">КЕГЭ</h1>
       </div>
-      <ThemeButton />
+      {/*<ThemeButton />*/}
     </header>
   );
 }

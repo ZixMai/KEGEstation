@@ -1,11 +1,13 @@
 import type { Task } from "./types";
+import type {KimTask} from "@/api";
 
-export default function rateAnswers(tasks: Task[]) {
+export default function rateAnswers(tasks: KimTask[]) {
   for (const item of tasks) {
     item.score = 0;
 
     // Tasks 1-25: exact match
-    if (item.number % 100 <= 25 && item.answer.toLowerCase() === item.key.toLowerCase()) {
+    // TODO
+    if (item.number % 100 <= 25 && item.userAnswer == item.answer[0]) {
       item.score = 1;
     }
 

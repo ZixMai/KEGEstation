@@ -49,7 +49,7 @@ export function ExamShell() {
 
             <div className="flex flex-1 overflow-hidden">
                 {/* Left sidebar with controls and navigation */}
-                <div className="flex flex-col border-r bg-background w-[180px]">
+                <div className="flex flex-col border-r bg-background w-[120px] bg-blue-100">
                     {/* Vertical navigation */}
                     <ExamNav/>
                 </div>

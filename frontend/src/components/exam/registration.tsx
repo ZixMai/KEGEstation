@@ -282,7 +282,7 @@ export function Registration() {
                         <div>
                             <h3 className="text-lg font-semibold mb-4">НОМЕР КИМ</h3>
                             <div className="flex gap-2 mb-6">
-                                <InputOTP maxLength={8} pattern={REGEXP_ONLY_DIGITS} value={kimData?.kim.toString()}
+                                <InputOTP maxLength={8} pattern={REGEXP_ONLY_DIGITS} value={kimData?.id?.toString()}
                                           className="flex gap-2 mb-4" readOnly disabled>
                                     <InputOTPGroup>
                                         <InputOTPSlot index={0}/>
@@ -401,7 +401,7 @@ export function Registration() {
                         <div>
                             <h3 className="text-lg font-semibold mb-4">НОМЕР КИМ</h3>
                             <div className="flex gap-2 mb-6">
-                                <InputOTP maxLength={8} pattern={REGEXP_ONLY_DIGITS} value={kimData?.kim.toString()}
+                                <InputOTP maxLength={8} pattern={REGEXP_ONLY_DIGITS} value={kimData?.id?.toString()}
                                           className="flex gap-2 mb-4" readOnly disabled>
                                     <InputOTPGroup>
                                         <InputOTPSlot index={0}/>

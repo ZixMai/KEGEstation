@@ -11,7 +11,7 @@ import { Result } from "@/components/exam/result";
 function VariantContent() {
   const searchParams = useSearchParams();
   const [dataLoaded, setDataLoaded] = useState(false);
-  const { loadKim, kimData, showResult } = useExamStore();
+  const { loadKim, kimData, realMode, showResult } = useExamStore();
   const user = useUserStore((state) => state.user);
 
   useEffect(() => {
@@ -39,7 +39,7 @@ function VariantContent() {
     );
   }
 
-  if (kimData.realMode) {
+  if (realMode) {
     return <Registration />;
   }
 

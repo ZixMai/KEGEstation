@@ -11,13 +11,14 @@ export function Result() {
 
   useEffect(() => {
     if (kimData) {
-      sendResult(kimData.kim !== "-");
+      sendResult(true);
     }
+    console.log(kimData)
   }, [kimData, sendResult]);
 
   if (!kimData) return null;
 
-  const primaryScore = kimData.tasks.reduce((acc, t) => acc + t.score, 0);
+  const primaryScore = kimData.tasksForKim.reduce((acc, t) => acc + t.score, 0);
   const secondaryScore = SCALE[primaryScore] || 0;
 
   return (
@@ -48,18 +49,18 @@ export function Result() {
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span>Всего заданий:</span>
-                  <span className="font-bold">{kimData.tasks.length}</span>
+                  <span className="font-bold">{kimData.tasksForKim.length}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Дано ответов:</span>
                   <span className="font-bold">
-                    {kimData.tasks.filter((t) => t.answer !== "").length}
+                    {kimData.tasksForKim.filter((t) => t.userAnswer !== "").length}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span>Правильных ответов:</span>
                   <span className="font-bold">
-                    {kimData.tasks.filter((t) => t.score > 0).length}
+                    {kimData.tasksForKim.filter((t) => t.score > 0).length}
                   </span>
                 </div>
               </div>
@@ -73,7 +74,7 @@ export function Result() {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              {kimData.tasks.map((task, index) => (
+              {kimData.tasksForKim.map((task, index) => (
                 <div
                   key={index}
                   className="flex items-center justify-between p-3 border rounded-lg hover:bg-accent cursor-pointer"
@@ -82,7 +83,7 @@ export function Result() {
                   <div className="flex items-center gap-4">
                     <span className="font-bold w-12">№{task.number}</span>
                     <span className="text-sm text-muted-foreground">
-                      Ваш ответ: {task.answer || "(нет ответа)"}
+                      Ваш ответ: {task.userAnswer || "(нет ответа)"}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">

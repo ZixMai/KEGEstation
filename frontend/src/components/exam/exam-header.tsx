@@ -29,7 +29,7 @@ export function ExamHeader() {
   if (!kimData) return null;
 
   return (
-    <div className="flex items-center justify-between p-4 bg-blue-400 text-white">
+    <div className="flex items-center justify-between p-4 bg-[#1e325a] text-white">
       <div className="flex items-center gap-4">
         {kimData.kim && kimData.kim !== "-" && (
           <>
