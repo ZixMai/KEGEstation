@@ -7,13 +7,16 @@ public class User
     public long Id { get; set; }
     
     public string? Login { get; set; }
-    public string UserFirstName { get; set; } = string.Empty;
-    public string UserName { get; set; } = string.Empty;
     
-    public JsonElement? Contacts { get; set; }
+    public string LastName { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
+    public string Patronymic { get; set; } = string.Empty;
+    public string School { get; set; } = string.Empty;
+    public string SchoolClassName { get; set; } = string.Empty;
+    public string Locality { get; set; } = string.Empty;
     
     public string Role { get; set; } = nameof(Domain.Role.STUDENT);
-    public bool IsDeleted { get; set; } = false;
+    public bool IsDeleted { get; set; }
     
     public string? PasswordHash { get; set; }
     

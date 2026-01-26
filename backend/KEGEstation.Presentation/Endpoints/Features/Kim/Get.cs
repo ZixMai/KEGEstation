@@ -6,6 +6,8 @@ using KEGEstation.Domain;
 using KEGEstation.Presentation.Groups;
 using FastEndpoints;
 using FluentValidation;
+using KEGEstation.Domain.Utils;
+using File = KEGEstation.Domain.File;
 
 namespace KEGEstation.Presentation.Endpoints.Features.Kim;
 
@@ -35,14 +37,34 @@ public class GetEndpoint(
             RuleFor(x => x.Name)
                 .MaximumLength(256).WithMessage("Слишком длинное имя");
             
-            RuleFor(x => x.FirstName)
+            RuleFor(x => x.LastName)
                 .MaximumLength(256).WithMessage("Слишком длинная фамилия");
+            
+            RuleFor(x => x.Patronymic)
+                .MaximumLength(256).WithMessage("Слишком длинное отчество");
+            
+            RuleFor(x => x.School)
+                .MaximumLength(512).WithMessage("Слишком длинное название школы");
+            
+            RuleFor(x => x.SchoolClassName)
+                .MaximumLength(64).WithMessage("Слишком длинное название класса");
+
+            RuleFor(x => x.Locality)
+                .MaximumLength(200).WithMessage("Слишком длинное название населённого пункта");
         }
     }
 
     public override async Task HandleAsync(GetKimRequest req, CancellationToken ct)
     {
-        var user = new User{ UserFirstName = req.FirstName, UserName = req.Name, Contacts = req.Contacts };
+        var user = new User
+        { 
+            LastName = req.LastName,
+            Name = req.Name,
+            Patronymic = req.Patronymic,
+            School = req.School,
+            SchoolClassName = req.SchoolClassName,
+            Locality = req.Locality
+        };
         user = await userRepository.CreateAsync(user, ct);
         
         var kim = await kimRepository.GetByIdWithTasksAsync(req.KimId, ct);
@@ -53,37 +75,46 @@ public class GetEndpoint(
             return;
         }
 
-        var images = new List<string>();
-        // foreach (var key in kim.TasksForKim.SelectMany(task => task.Task.ImageS3Keys).ToList())
-        // {
-        //     var response = await s3Client.GetObjectAsync(new GetObjectRequest
-        //     {
-        //         BucketName = "files",
-        //         Key = key
-        //     }, ct);
-        //     
-        //     using var memoryStream = new MemoryStream();
-        //     await response.ResponseStream.CopyToAsync(memoryStream, ct);
-        //     images.Add(Convert.ToBase64String(memoryStream.ToArray()));
-        // }
+        var images = new List<Base64File>();
+        foreach (var file in kim.TasksForKim.SelectMany(task => JsonConverter.MapJsonToCollection<File>(task.Task.ImageS3Keys)).ToList())
+        {
+            var response = await s3Client.GetObjectAsync(new GetObjectRequest
+            {
+                BucketName = "files",
+                Key = file.Url
+            }, ct);
+            
+            using var memoryStream = new MemoryStream();
+            await response.ResponseStream.CopyToAsync(memoryStream, ct);
+            images.Add(new Base64File
+            {
+                Base64Content = Convert.ToBase64String(memoryStream.ToArray()),
+                Name = file.Name
+            });
+        }
 
         
         await Send.OkAsync(
             new GetKimResponse(
                 Id: kim.Id,
                 CreatorId: kim.CreatorId,
+                Name: kim.Name,
                 Description: kim.Description,
                 CreatedAt: kim.CreatedAt,
                 UpdatedAt: kim.UpdatedAt,
                 UnlockCode: kim.UnlockCode,
-                TasksForKim: kim.TasksForKim.Select(task =>
-                {
-                    var linkedTask = task.Task;
-                    linkedTask.Creator = null!;
-                    linkedTask.KimsForTask = [];
-                    return linkedTask;
-                }).ToList(),
-                User: user, 
+                TasksForKim: kim.TasksForKim.Select(taskLink => 
+                    new GetKimTaskResponse(
+                        Id: taskLink.Task.Id,
+                        CreatorId: taskLink.Task.CreatorId,
+                        Number: taskLink.Task.Number,
+                        Key: taskLink.Task.Key,
+                        Table: new Table(Rows: taskLink.Task.AnswerRowsSize, Columns: taskLink.Task.AnswerColumnsSize),
+                        Text: taskLink.Task.Text,
+                        ImageS3Keys: JsonConverter.MapJsonToCollection<File>(taskLink.Task.ImageS3Keys),
+                        FileS3Keys: JsonConverter.MapJsonToCollection<File>(taskLink.Task.FileS3Keys)
+                    )).ToList(),
+                UserId: user.Id, 
                 Base64Images: images),
         ct);
     }
@@ -92,18 +123,39 @@ public class GetEndpoint(
 public sealed record GetKimRequest(
     long KimId,
     string Name,
-    string FirstName,
-    JsonElement? Contacts
+    string LastName,
+    string Patronymic,
+    string School,
+    string SchoolClassName,
+    string Locality
 );
+
+public sealed record Table(
+    short Rows,
+    short Columns
+);
+
+public sealed record GetKimTaskResponse(
+    long Id,
+    long CreatorId,
+    short? Number,
+    string Key,
+    Table Table,
+    string Text,
+    List<File> ImageS3Keys,
+    List<File> FileS3Keys
+);
+
 
 public sealed record GetKimResponse(
     long Id,
     long CreatorId,
+    string Name,
     string? Description,
     DateTime CreatedAt,
     DateTime UpdatedAt,
     string UnlockCode,
-    List<KimTask> TasksForKim,
-    User User,
-    List<string> Base64Images
+    List<GetKimTaskResponse> TasksForKim,
+    long UserId,
+    List<Base64File> Base64Images
 );

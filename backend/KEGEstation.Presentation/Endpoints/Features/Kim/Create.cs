@@ -30,8 +30,8 @@ public class CreateEndpoint(
 
     public override async Task HandleAsync(CreateKimRequest req, CancellationToken ct)
     {
-        var (userId, role) = User.GetIdAndRole();
-        var kim = new Domain.Kim{ CreatorId = userId, Description = req.Description };
+        var (userId, _) = User.GetIdAndRole();
+        var kim = new Domain.Kim{ Name = req.Name, CreatorId = userId, Description = req.Description };
         kim = await kimRepository.CreateAsync(kim, ct);
         var kimToTasks = req.Tasks.Select(taskId => 
             new KimToTask { KimId = kim.Id, TaskId = taskId }).ToList();
@@ -42,6 +42,7 @@ public class CreateEndpoint(
 }
 
 public sealed record CreateKimRequest(
+    string Name,
     string Description,
     List<long> Tasks
 );

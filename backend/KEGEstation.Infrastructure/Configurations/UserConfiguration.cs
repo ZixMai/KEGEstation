@@ -20,20 +20,34 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasColumnName("login")
             .HasColumnType("text");
 
-        builder.Property(u => u.UserFirstName)
-            .HasColumnName("user_first_name")
+        builder.Property(u => u.LastName)
+            .HasColumnName("last_name")
             .HasColumnType("text")
             .IsRequired();
 
-        builder.Property(u => u.UserName)
-            .HasColumnName("user_name")
+        builder.Property(u => u.Name)
+            .HasColumnName("name")
             .HasColumnType("text")
             .IsRequired();
 
-        builder.Property(u => u.Contacts)
-            .HasColumnName("contacts")
-            .HasColumnType("jsonb")
-            .HasDefaultValueSql("'[]'::jsonb")
+        builder.Property(u => u.Patronymic)
+            .HasColumnName("patronymic")
+            .HasColumnType("text")
+            .IsRequired();
+
+        builder.Property(u => u.School)
+            .HasColumnName("school")
+            .HasColumnType("text")
+            .IsRequired();
+
+        builder.Property(u => u.SchoolClassName)
+            .HasColumnName("school_class_name")
+            .HasColumnType("text")
+            .IsRequired();
+
+        builder.Property(u => u.Locality)
+            .HasColumnName("locality")
+            .HasColumnType("text")
             .IsRequired();
 
         builder.Property(u => u.Role)
@@ -46,8 +60,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasColumnName("is_deleted")
             .HasDefaultValue(false)
             .IsRequired();
-        
-        
+
         builder.Property(u => u.PasswordHash)
             .HasColumnName("password_hash")
             .HasMaxLength(200);

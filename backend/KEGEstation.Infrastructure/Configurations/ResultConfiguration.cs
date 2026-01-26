@@ -29,8 +29,7 @@ public class ResultConfiguration : IEntityTypeConfiguration<Result>
 
         builder.Property(r => r.Metadata)
             .HasColumnName("metadata")
-            .HasColumnType("jsonb")
-            .HasDefaultValueSql("'[]'::jsonb");
+            .HasColumnType("jsonb");
 
         builder.Property(r => r.CreatedAt)
             .HasColumnName("created_at")

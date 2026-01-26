@@ -12,7 +12,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KEGEstation.Domain", "KEGEs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KEGEstation.Application", "KEGEstation.Application\KEGEstation.Application.csproj", "{89C6AC48-4A9D-49F4-BBAC-B79A01063BDC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KEGE.Infrastructure", "KEGE.Infrastructure\KEGE.Infrastructure.csproj", "{0170DA95-AA1E-4BD8-95BE-8817668C3E63}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KEGEstation.Infrastructure", "KEGEstation.Infrastructure\KEGEstation.Infrastructure.csproj", "{0170DA95-AA1E-4BD8-95BE-8817668C3E63}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

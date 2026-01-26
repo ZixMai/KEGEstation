@@ -36,7 +36,8 @@ public class GetAllEndpoint(
                     new GetAllKimResponseUnit(
                         Id: kim.Id,
                         CreatorId: kim.CreatorId,
-                        Creator: $"{kim.Creator.UserFirstName} {kim.Creator.UserName} ({kim.Creator.Login})",
+                        Creator: $"{kim.Creator.LastName} {kim.Creator.Name} ({kim.Creator.Login})",
+                        Name: kim.Name,
                         Description: kim.Description,
                         CreatedAt: kim.CreatedAt)
                     ).OrderByDescending(k => k.CreatedAt).ToList()), 
@@ -48,6 +49,7 @@ public sealed record GetAllKimResponseUnit(
     long Id,
     long CreatorId,
     string Creator,
+    string Name,
     string? Description,
     DateTime CreatedAt
 );

@@ -7,10 +7,14 @@ public class Kim
     public long CreatorId { get; set; }
     public User Creator { get; set; } = null!;
     
+    public string Name { get; set; } = string.Empty;
     public string? Description { get; set; }
     
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
+    
+    public bool RealMode { get; set; }
+        
     public string UnlockCode { get; set; } = "MAI8";
     
     // Navigation properties

@@ -20,6 +20,11 @@ public class KimConfiguration : IEntityTypeConfiguration<Kim>
             .HasColumnName("creator_id")
             .IsRequired();
 
+        builder.Property(k => k.Name)
+            .HasColumnName("name")
+            .HasColumnType("text")
+            .IsRequired();
+
         builder.Property(k => k.Description)
             .HasColumnName("description")
             .HasColumnType("text");
@@ -35,11 +40,17 @@ public class KimConfiguration : IEntityTypeConfiguration<Kim>
             .HasColumnType("timestamp without time zone")
             .HasDefaultValueSql("now()")
             .IsRequired();
-        
+
+        builder.Property(k => k.RealMode)
+            .HasColumnName("real_mode")
+            .HasDefaultValue(false)
+            .IsRequired();
+
         builder.Property(k => k.UnlockCode)
             .HasColumnName("unlock_code")
-            .HasColumnType("text");
-        
+            .HasColumnType("text")
+            .IsRequired();
+
         // Index on FK
         builder.HasIndex(k => k.CreatorId)
             .HasDatabaseName("ix_kims_creator_id");
@@ -49,8 +60,13 @@ public class KimConfiguration : IEntityTypeConfiguration<Kim>
             .WithMany(u => u.CreatedKims)
             .HasForeignKey(k => k.CreatorId)
             .OnDelete(DeleteBehavior.Cascade);
-        
-        builder.HasMany(x => x.TasksForKim)
+
+        builder.HasMany(k => k.Results)
+            .WithOne(r => r.Kim)
+            .HasForeignKey(r => r.KimId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(k => k.TasksForKim)
             .WithOne(x => x.Kim)
             .HasForeignKey(x => x.KimId)
             .OnDelete(DeleteBehavior.Cascade);

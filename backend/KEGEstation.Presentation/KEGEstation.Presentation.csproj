@@ -50,7 +50,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\KEGEstation.Application\KEGEstation.Application.csproj" />
-      <ProjectReference Include="..\KEGE.Infrastructure\KEGE.Infrastructure.csproj" />
+      <ProjectReference Include="..\KEGEstation.Infrastructure\KEGEstation.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

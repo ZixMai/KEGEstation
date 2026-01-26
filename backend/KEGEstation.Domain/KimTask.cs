@@ -9,14 +9,14 @@ public class KimTask
     public long CreatorId { get; set; }
     public User Creator { get; set; }
     
-    public string? Description { get; set; }
+    public string Text { get; set; } = string.Empty;
     
-    public List<string> ImageS3Keys { get; set; } = [];
-    public List<string> FileS3Keys { get; set; } = [];
+    public string ImageS3Keys { get; set; } = "[]";
+    public string FileS3Keys { get; set; } = "[]";
     
     public short? Number { get; set; }
     
-    public string Answer { get; set; }
+    public string Key { get; set; }
     public short AnswerColumnsSize { get; set; } = 1;
     public short AnswerRowsSize { get; set; } = 1;
 

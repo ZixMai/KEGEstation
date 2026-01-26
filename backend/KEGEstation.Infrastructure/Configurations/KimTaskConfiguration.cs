@@ -20,9 +20,10 @@ public class KimTaskConfiguration : IEntityTypeConfiguration<KimTask>
             .HasColumnName("creator_id")
             .IsRequired();
 
-        builder.Property(t => t.Description)
-            .HasColumnName("description")
-            .HasColumnType("text");
+        builder.Property(t => t.Text)
+            .HasColumnName("text")
+            .HasColumnType("text")
+            .IsRequired();
 
         builder.Property(t => t.ImageS3Keys)
             .HasColumnName("image_s3_keys")
@@ -40,10 +41,9 @@ public class KimTaskConfiguration : IEntityTypeConfiguration<KimTask>
             .HasColumnName("number")
             .HasColumnType("smallint");
 
-        builder.Property(t => t.Answer)
-            .HasColumnName("answer")
-            .HasColumnType("jsonb")
-            .HasDefaultValueSql("'[]'::jsonb")
+        builder.Property(t => t.Key)
+            .HasColumnName("key")
+            .HasColumnType("text")
             .IsRequired();
 
         builder.Property(t => t.AnswerColumnsSize)
@@ -64,11 +64,11 @@ public class KimTaskConfiguration : IEntityTypeConfiguration<KimTask>
 
         // Relationships
         builder.HasOne(t => t.Creator)
-            .WithMany(k => k.CreatedTasks)
+            .WithMany(u => u.CreatedTasks)
             .HasForeignKey(t => t.CreatorId)
             .OnDelete(DeleteBehavior.Cascade);
-        
-        builder.HasMany(x => x.KimsForTask)
+
+        builder.HasMany(t => t.KimsForTask)
             .WithOne(x => x.Task)
             .HasForeignKey(x => x.TaskId)
             .OnDelete(DeleteBehavior.Cascade);

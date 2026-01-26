@@ -2,6 +2,8 @@ using KEGEstation.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+namespace KEGEstation.Infrastructure.Configurations;
+
 public class KimToTaskConfiguration : IEntityTypeConfiguration<KimToTask>
 {
     public void Configure(EntityTypeBuilder<KimToTask> builder)

@@ -6,6 +6,7 @@ using KEGEstation.Domain;
 using KEGEstation.Presentation.Groups;
 using FastEndpoints;
 using KEGEstation.Domain.Utils;
+using File = KEGEstation.Domain.File;
 
 namespace KEGEstation.Presentation.Endpoints.Features.Kim;
 
@@ -33,22 +34,22 @@ public class CreateTaskEndpoint(
         var kimTask = new KimTask
         {
             CreatorId = userId,
-            Description = req.Description,
+            Text = req.Text,
             Number = req.Number,
-            Answer = req.Answer,
+            Key = req.Key,
             AnswerColumnsSize = req.AnswerColumnsSize,
             AnswerRowsSize = req.AnswerRowsSize,
-            ImageS3Keys = req.ImageS3Keys ?? [],
-            FileS3Keys = []
+            ImageS3Keys = JsonConverter.MapCollectionToJson(req.ImageS3Keys)
         };
-        
+
+        var fileS3Keys = new List<File>();
         foreach (var file in req.Files ?? [])
         {
             using var memoryStream = new MemoryStream();
             await file.CopyToAsync(memoryStream, ct);
             memoryStream.Position = 0;
             
-            var s3Key = Guid.NewGuid() + file.FileName;
+            var s3Key = Guid.NewGuid().ToString();
             var putRequest = new PutObjectRequest
             {
                 Key = s3Key,
@@ -57,9 +58,11 @@ public class CreateTaskEndpoint(
                 ContentType = file.ContentType
             };
     
-            kimTask.FileS3Keys.Add(s3Key);
+            fileS3Keys.Add(new File{Url = s3Key, Name = file.FileName});
             await s3Client.PutObjectAsync(putRequest, ct);
         }
+
+        kimTask.FileS3Keys = JsonConverter.MapCollectionToJson(fileS3Keys);
         kimTask = await kimTaskRepository.CreateAsync(kimTask, ct);
         
         await Send.OkAsync(new CreateTaskResponse(TaskId: kimTask.Id), ct);
@@ -68,12 +71,12 @@ public class CreateTaskEndpoint(
 
 
 public sealed record CreateTaskRequest(
-    string Description,
+    string Text,
     short Number,
-    string Answer,
+    string Key,
     short AnswerColumnsSize,
     short AnswerRowsSize,
-    List<string>? ImageS3Keys,
+    List<File>? ImageS3Keys,
     List<IFormFile>? Files
 );
 
