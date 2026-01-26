@@ -69,7 +69,7 @@ export function StartPage() {
                         Варианты
                     </div>
 
-                    <div className="grid grid-cols-3">
+                    <div className="grid grid-cols-3 gap-2 mt-2">
                         {
                             kims?.kims?.map((kim, idx) => (
                                 <Card key={idx}>

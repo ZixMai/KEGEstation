@@ -92,7 +92,7 @@ export function ExamNav() {
                 }
             }}
           >
-            {task.number + 1}
+            {task.number}
           </Button>
         ))}
       </div>

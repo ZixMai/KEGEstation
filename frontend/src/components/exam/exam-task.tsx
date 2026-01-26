@@ -25,7 +25,7 @@ export function ExamTask({ scale }: { scale: number }) {
       style={{ zoom: `${scale*100}%`}}
       className="space-y-4 break-normal"
     >
-      <h2 className="text-2xl font-bold">Задание {task.number + 1}</h2>
+      <h2 className="text-2xl font-bold">Задание {task.number}</h2>
 
       {taskInstruction && (
         <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
@@ -56,7 +56,7 @@ export function ExamTask({ scale }: { scale: number }) {
             {task.fileS3Keys.map((file, index) => (
               <a
                 key={index}
-                href={`${process.env.NEXT_PUBLIC_API_URL}/kim/getFile/${file}`}
+                href={`${process.env.NEXT_PUBLIC_API_URL}kim/getFile/${file}`}
                 download={file}
                 className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors"
               >

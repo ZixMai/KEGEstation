@@ -15,7 +15,6 @@ export function LatexWrapper({content, scale, className = ""}: LatexWrapperProps
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (containerRef.current && typeof window !== "undefined") {
             if (containerRef.current) {
                 // katex.render(content, containerRef.current, {
                 //
@@ -30,8 +29,7 @@ export function LatexWrapper({content, scale, className = ""}: LatexWrapperProps
                     throwOnError: false,
                 });
             }
-        }
-    }, [content, scale]);
+    }, []);
 
     return (
         <div
