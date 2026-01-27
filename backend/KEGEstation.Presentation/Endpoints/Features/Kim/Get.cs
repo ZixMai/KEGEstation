@@ -76,22 +76,22 @@ public class GetEndpoint(
         }
 
         var images = new List<Base64File>();
-        foreach (var file in kim.TasksForKim.SelectMany(task => JsonConverter.MapJsonToCollection<File>(task.Task.ImageS3Keys)).ToList())
-        {
-            var response = await s3Client.GetObjectAsync(new GetObjectRequest
-            {
-                BucketName = "files",
-                Key = file.Url
-            }, ct);
-            
-            using var memoryStream = new MemoryStream();
-            await response.ResponseStream.CopyToAsync(memoryStream, ct);
-            images.Add(new Base64File
-            {
-                Base64Content = Convert.ToBase64String(memoryStream.ToArray()),
-                Name = file.Name
-            });
-        }
+        // foreach (var file in kim.TasksForKim.SelectMany(task => JsonConverter.MapJsonToCollection<File>(task.Task.ImageS3Keys)).ToList())
+        // {
+        //     var response = await s3Client.GetObjectAsync(new GetObjectRequest
+        //     {
+        //         BucketName = "files",
+        //         Key = file.Url
+        //     }, ct);
+        //     
+        //     using var memoryStream = new MemoryStream();
+        //     await response.ResponseStream.CopyToAsync(memoryStream, ct);
+        //     images.Add(new Base64File
+        //     {
+        //         Base64Content = Convert.ToBase64String(memoryStream.ToArray()),
+        //         Name = file.Name
+        //     });
+        // }
 
         
         await Send.OkAsync(
