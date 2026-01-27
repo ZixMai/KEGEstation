@@ -109,7 +109,9 @@ public class GetEndpoint(
                         CreatorId: taskLink.Task.CreatorId,
                         Number: taskLink.Task.Number,
                         Key: taskLink.Task.Key,
-                        Table: new Table(Rows: taskLink.Task.AnswerRowsSize, Columns: taskLink.Task.AnswerColumnsSize),
+                        Table: taskLink.Task is { AnswerRowsSize: 1, AnswerColumnsSize: 1 } 
+                            ? null :
+                            new Table(Rows: taskLink.Task.AnswerRowsSize, Columns: taskLink.Task.AnswerColumnsSize),
                         Text: taskLink.Task.Text,
                         ImageS3Keys: JsonConverter.MapJsonToCollection<File>(taskLink.Task.ImageS3Keys),
                         FileS3Keys: JsonConverter.MapJsonToCollection<File>(taskLink.Task.FileS3Keys)
@@ -140,7 +142,7 @@ public sealed record GetKimTaskResponse(
     long CreatorId,
     short? Number,
     string Key,
-    Table Table,
+    Table? Table,
     string Text,
     List<File> ImageS3Keys,
     List<File> FileS3Keys
