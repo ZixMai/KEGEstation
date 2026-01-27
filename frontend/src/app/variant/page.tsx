@@ -18,7 +18,6 @@ function VariantContent() {
     useEffect(() => {
         const kim = searchParams.get("kim") || "-";
         // const difficult = Number(searchParams.get("difficult")) || 2;
-        loadUser();
         if (user) {
             loadKim(kim, user)
                 .then(() => setDataLoaded(true))
