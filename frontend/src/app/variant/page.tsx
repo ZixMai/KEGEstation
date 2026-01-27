@@ -16,7 +16,6 @@ function VariantContent() {
     const {user, loadUser} = useUserStore();
 
     useEffect(() => {
-        console.log("twice")
         const kim = searchParams.get("kim") || "-";
         // const difficult = Number(searchParams.get("difficult")) || 2;
         if (user) {

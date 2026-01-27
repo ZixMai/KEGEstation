@@ -134,8 +134,6 @@ export const useExamStore = create<ExamState>()((set, get) => ({
     loadKim: async (kim, user) => {
         let kimData = getLocalStorage();
 
-        console.log(kimData)
-
         if (kimData) {
             set({kimData});
             return;
