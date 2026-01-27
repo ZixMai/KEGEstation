@@ -18,7 +18,7 @@ export function ExamTask({ scale }: { scale: number }) {
 
   // Определяем какое поле содержит текст задания
   const taskContent = task.text || (task as any).text || "";
-  const taskInstruction = task.instruction || "";
+  // const taskInstruction = task.instruction || "";
 
   return (
     <div
@@ -27,15 +27,15 @@ export function ExamTask({ scale }: { scale: number }) {
     >
       <h2 className="text-2xl font-bold">Задание {task.number}</h2>
 
-      {taskInstruction && (
-        <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
-          <LatexWrapper
-            content={taskInstruction}
-            className="text-sm text-blue-900 dark:text-blue-100"
-            scale={scale}
-          />
-        </div>
-      )}
+      {/*{taskInstruction && (*/}
+      {/*  <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">*/}
+      {/*    <LatexWrapper*/}
+      {/*      content={taskInstruction}*/}
+      {/*      className="text-sm text-blue-900 dark:text-blue-100"*/}
+      {/*      scale={scale}*/}
+      {/*    />*/}
+      {/*  </div>*/}
+      {/*)}*/}
 
       {taskContent && (
         <div className="prose dark:prose-invert max-w-none">
@@ -43,11 +43,11 @@ export function ExamTask({ scale }: { scale: number }) {
         </div>
       )}
 
-      {!taskContent && !taskInstruction && (
-        <div className="text-muted-foreground">
-          Текст задания отсутствует
-        </div>
-      )}
+      {/*{!taskContent && !taskInstruction && (*/}
+      {/*  <div className="text-muted-foreground">*/}
+      {/*    Текст задания отсутствует*/}
+      {/*  </div>*/}
+      {/*)}*/}
 
       {task.fileS3Keys && task.fileS3Keys.length > 0 && (
         <div className="space-y-2">

@@ -57,7 +57,7 @@ export function ExamShell() {
                 {/* Main content area */}
                 <div className="flex-1 flex flex-col overflow-hidden">
                     {/* Check if task has table with valid rows and cols */}
-                    {index !== null && currentTask?.table && currentTask.table.rows > 0 && currentTask.table.cols > 0 ? (
+                    {index !== null && currentTask?.table && currentTask.table.rows > 0 && currentTask.table.columns > 0 ? (
                         // Layout for tasks with table: task on left, table on right
                         <div className="flex-1 overflow-auto">
                             <div className="flex h-full">

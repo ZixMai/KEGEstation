@@ -19,7 +19,7 @@ export function TableInput() {
   if (!task?.table) return null;
 
   const rows = task.table.rows;
-  const cols = task.table.cols;
+  const cols = task.table.columns;
 
   // Парсинг ответа: строки разделены \n, значения в строке разделены пробелами
   const parseAnswer = (answer: string): string[][] => {
