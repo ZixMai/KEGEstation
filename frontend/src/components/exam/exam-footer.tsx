@@ -13,7 +13,7 @@ export function ExamFooter() {
 
   useEffect(() => {
     if (task) {
-      setAnswerLocal(task.userAnswer || "");
+      setAnswerLocal(task.answer || "");
     }
   }, [task]);
 
@@ -31,7 +31,7 @@ export function ExamFooter() {
     setAnswerLocal("");
   };
 
-  const isAnswerSaved = task.userAnswer !== "" && answer === task.userAnswer;
+  const isAnswerSaved = task.answer !== "" && answer === task.answer;
 
   return (
     <div className="p-4 bg-background h-16">

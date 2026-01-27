@@ -4,6 +4,7 @@ import { SCALE, EXAM_DURATION } from "@/lib/constants";
 import rateAnswers from "@/lib/score";
 import type {GetKimResponse, KimTask} from "@/api";
 import apiClient from "@/lib/axios";
+import type {User} from "@/stores/user-store";
 
 const setLocalStorage = (data: GetKimResponse) =>
   localStorage.setItem("kimData", JSON.stringify(data));
@@ -24,7 +25,6 @@ interface ExamState {
   blankNumber: string;
   endExam: boolean;
   isTransfered: boolean;
-  realMode: boolean;
 
   // Actions
   updateKimData: () => void;
@@ -38,7 +38,7 @@ interface ExamState {
   startExam: () => void;
   endExamAction: () => void;
   // updateTimer: () => void;
-  loadKim: (kim: string, difficult: number, userId?: string) => Promise<void>;
+  loadKim: (kim: string, user: User) => Promise<void>;
   sendResult: (isVariant: boolean) => Promise<void>;
 }
 
@@ -46,10 +46,9 @@ export const useExamStore = create<ExamState>()((set, get) => ({
   kimData: null,
   index: null,
   showResult: false,
-  blankNumber: "2832503195017",
+  blankNumber: "",
   endExam: false,
   isTransfered: false,
-  realMode: true,
 
   updateKimData: () => {
     const kimData = getLocalStorage();
@@ -76,7 +75,7 @@ export const useExamStore = create<ExamState>()((set, get) => ({
 
     const task = kimData.tasksForKim[index];
     if (task) {
-      task.userAnswer = answer;
+      task.answer = answer;
       setLocalStorage(kimData);
       set({ kimData: { ...kimData } });
     }
@@ -102,7 +101,8 @@ export const useExamStore = create<ExamState>()((set, get) => ({
   startExam: () => {
     const { kimData } = get();
     if (kimData) {
-      set({ realMode: false });
+      kimData.realMode = false;
+      set({ kimData });
     }
   },
 
@@ -132,34 +132,20 @@ export const useExamStore = create<ExamState>()((set, get) => ({
   //   }
   // },
 
-  loadKim: async (kim, difficult, userId) => {
+  loadKim: async (kim, user) => {
     let kimData = getLocalStorage();
 
-    // if (kimData) {
-    //   const pass = confirm("Продолжить решение прошлого варианта?");
-    //   if (pass) {
-    //     set({ kimData });
-    //     return;
-    //   }
-    //   kimData = null;
-    //   removeLocalStorage();
-    // }
-
-    const url =
-      kim === "-"
-        ? `/api/variant/random?difficult=${difficult}`
-        : `https://kompege.ru/api/v1/variant/kim/${kim}`;
+    if (kimData) {
+      set({ kimData });
+      return;
+    }
 
     try {
       // const response = await fetch(url);
       // const data: KimData = await response.json();
       const response = await apiClient.post<GetKimResponse>("kim/get", {
         kimId: Number(kim),
-        name: "test",
-        firstName: "test",
-        contacts: {
-          phone: "qq"
-        }
+        ...user
       });
       const data = response.data;
 
@@ -167,16 +153,16 @@ export const useExamStore = create<ExamState>()((set, get) => ({
       //   throw new Error("authError");
       // }
 
-      if (kimData && kimData.id.toString() === kim) {
+      if (data && data.id.toString() === kim) {
         data.tasksForKim.forEach((el, i) => {
-          el.userAnswer = kimData.tasksForKim[i] ? kimData.tasksForKim[i].userAnswer : "";
+          el.answer = data.tasksForKim[i] ? data.tasksForKim[i].answer : "";
           el.score = 0;
         });
         // data.time = kimData.time;
       } else {
         data.tasksForKim.forEach((el) => {
-          el.answer = JSON.parse(el.answer).answer;
-          el.userAnswer = "";
+          // el.key = JSON.parse(el.answer).answer;
+          el.answer = "";
           el.score = 0;
         });
         // data.time = 0;
@@ -213,39 +199,28 @@ export const useExamStore = create<ExamState>()((set, get) => ({
 
       // TODO sending
 
-    //   const data = {
-    //     kim: kimData.kim === "-" ? "0" : kimData.kim,
-    //     result,
-    //     primaryScore,
-    //     secondaryScore,
-    //     hide: kimData.hideAnswer,
-    //     duration: kimData.time * 60000,
-    //   };
-    //
-    //   try {
-    //     const existingResponse = await fetch(`/api/result/kim/${data.kim}/user_id`);
-    //     const existing = await existingResponse.json();
-    //
-    //     if (existing && data.kim !== "0") {
-    //       if (!kimData.oneAttempt) {
-    //         await fetch(`/api/result/${existing.id}`, {
-    //           method: "PUT",
-    //           headers: { "Content-Type": "application/json" },
-    //           body: JSON.stringify(data),
-    //         });
-    //       }
-    //     } else {
-    //       await fetch("/api/result", {
-    //         method: "POST",
-    //         headers: { "Content-Type": "application/json" },
-    //         body: JSON.stringify(data),
-    //       });
-    //     }
-    //
-    //     set({ isTransfered: true });
-    //   } catch (error) {
-    //     console.error("Failed to send result:", error);
-    //   }
+      const data = {
+        kim: kimData.id,
+        userId: kimData.userId,
+        result,
+        metadata: {
+          primaryScore,
+          secondaryScore,
+          tasks: kimData.tasksForKim.map((item) => ({
+            id: item.id,
+            number: item.number,
+            answer: item.answer,
+            score: item.score,
+          }))
+        }
+      };
+
+      try {
+        const response = await apiClient.post("kim/createResult", data);
+        set({ isTransfered: true });
+      } catch (error) {
+        console.error("Failed to send result:", error);
+      }
     }
   },
 }));

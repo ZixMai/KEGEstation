@@ -27,7 +27,7 @@ export function ExamNav() {
 
   if (!kimData) return null;
 
-  const answeredCount = kimData.tasksForKim.filter((t) => t.userAnswer !== "").length;
+  const answeredCount = kimData.tasksForKim.filter((t) => t.answer && t.answer !== "").length;
 
   const handleScroll = (direction: "up" | "down") => {
     if (navRef.current) {
@@ -81,7 +81,7 @@ export function ExamNav() {
             size="sm"
             className={cn(
               "shrink-0 w-12 h-12",
-              task.userAnswer && task.userAnswer.length > 0
+              task.answer && task.answer.length > 0
                 ? "border-2 border-green-600"
                 : "bg-background",
               index === i && "ring-2 ring-primary"

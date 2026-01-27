@@ -4,18 +4,18 @@ import apiClient from "@/lib/axios";
 export type GetKimRequest = {
     kimId: number;
     name: string;
-    firstName: string;
-    contacts: {
-        phone: string;
-        email: string;
-        fio: string;
-    }
+    lastName: string;
+    patronymic: string;
+    school: string;
+    schoolClassName: string;
+    locality: string;
 }
 
 export type GetAllKimsUnit = {
     id: number;
     creatorId: number;
     creator: string;
+    name: string;
     description: string;
     createdAt: string;
 }
@@ -49,28 +49,37 @@ export type User = {
     updatedAt: string;
 }
 
+export type s3 = {
+    url: string;
+    name: string;
+}
+
 export type KimTask = {
     id: number;
-    description: string;
-    fileS3Keys: string[];
+    text: string;
+    fileS3Keys: s3[];
     number: number;
-    answer: string[];
-    answerColumnsSize: number;
-    answerRowsName: string;
+    key: string;
+    table?: {
+        rows: number;
+        columns: number;
+    }
     score: number;
-    userAnswer: string;
+    answer: string;
 }
 
 export type GetKimResponse = {
     id: number;
-    createId: number;
+    creatorId: number;
+    name: string;
     description: string;
     createdAt: string;
     updatedAt: string;
     unlockCode: string;
     tasksForKim: KimTask[];
-    user: User;
-    base64_images: string[]
+    userId: number;
+    base64_images: string[];
+    realMode: boolean;
 }
 
 export function useGetKim(getKimRequest: GetKimRequest) {

@@ -5,10 +5,12 @@ import { useExamStore } from "@/stores/exam-store";
 import { Button } from "../ui/button";
 // import { setInterval, clearInterval } from "worker-timers";
 import {CircleQuestionMark, Minus, X} from "lucide-react";
+import {useUserStore} from "@/stores/user-store";
 
 export function ExamHeader() {
-  const { kimData, blankNumber, endExam, endExamAction, updateTimer } =
+  const { kimData, blankNumber, endExam, endExamAction, /*updateTimer*/ } =
     useExamStore();
+  const {clearUser} = useUserStore();
 
   // useEffect(() => {
   //   const timer = setInterval(() => {
@@ -23,6 +25,7 @@ export function ExamHeader() {
       endExamAction();
     } else if (confirm("Вы уверены, что хотите завершить экзамен?")) {
       endExamAction();
+      clearUser();
     }
   };
 
@@ -31,9 +34,9 @@ export function ExamHeader() {
   return (
     <div className="flex items-center justify-between p-4 bg-[#1e325a] text-white">
       <div className="flex items-center gap-4">
-        {kimData.kim && kimData.kim !== "-" && (
+        {kimData.id && (
           <>
-            <span className="font-semibold">КИМ № {kimData.kim}</span>
+            <span className="font-semibold">КИМ № {kimData.id}</span>
             <span className="font-semibold">БР № {blankNumber}</span>
           </>
         )}

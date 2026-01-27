@@ -78,7 +78,7 @@ export function StartPage() {
                                         <CardDescription>{kim.description}</CardDescription>
                                         <CardAction>
                                             <Button asChild>
-                                                <Link href={`variant?kim=${kim.id}`}>Начать</Link>
+                                                <Link href={`register?kim=${kim.id}`}>Начать</Link>
                                             </Button>
                                         </CardAction>
                                     </CardHeader>

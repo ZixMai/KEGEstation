@@ -54,7 +54,7 @@ export function Result() {
                 <div className="flex justify-between">
                   <span>Дано ответов:</span>
                   <span className="font-bold">
-                    {kimData.tasksForKim.filter((t) => t.userAnswer !== "").length}
+                    {kimData.tasksForKim.filter((t) => t.answer !== "").length}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -83,7 +83,7 @@ export function Result() {
                   <div className="flex items-center gap-4">
                     <span className="font-bold w-12">№{task.number}</span>
                     <span className="text-sm text-muted-foreground">
-                      Ваш ответ: {task.userAnswer || "(нет ответа)"}
+                      Ваш ответ: {task.answer || "(нет ответа)"}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">

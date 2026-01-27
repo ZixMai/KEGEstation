@@ -7,7 +7,7 @@ export default function rateAnswers(tasks: KimTask[]) {
 
     // Tasks 1-25: exact match
     // TODO
-    if (item.number % 100 <= 25 && item.userAnswer == item.answer[0]) {
+    if (item.number % 100 <= 25 && item.answer == item.key) {
       item.score = 1;
     }
 
