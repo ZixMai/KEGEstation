@@ -134,6 +134,8 @@ export const useExamStore = create<ExamState>()((set, get) => ({
     loadKim: async (kim, user) => {
         let kimData = getLocalStorage();
 
+        console.log(kimData)
+
         if (kimData) {
             set({kimData});
             return;
@@ -198,7 +200,7 @@ export const useExamStore = create<ExamState>()((set, get) => ({
         // TODO sending
 
         const data = {
-            kim: kimData.id,
+            kimId: kimData.id,
             userId: kimData.userId,
             result: kimData.tasksForKim.filter((t) => t.score > 0).length,
             metadata: {
