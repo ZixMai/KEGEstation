@@ -103,6 +103,7 @@ public class GetEndpoint(
                 CreatedAt: kim.CreatedAt,
                 UpdatedAt: kim.UpdatedAt,
                 UnlockCode: kim.UnlockCode,
+                RealMode: kim.RealMode,
                 TasksForKim: kim.TasksForKim.Select(taskLink => 
                     new GetKimTaskResponse(
                         Id: taskLink.Task.Id,
@@ -157,6 +158,7 @@ public sealed record GetKimResponse(
     DateTime CreatedAt,
     DateTime UpdatedAt,
     string UnlockCode,
+    bool RealMode,
     List<GetKimTaskResponse> TasksForKim,
     long UserId,
     List<Base64File> Base64Images
