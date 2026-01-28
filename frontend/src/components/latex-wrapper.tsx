@@ -26,11 +26,12 @@ export function LatexWrapper({content, scale, className = ""}: LatexWrapperProps
                         {left: "$", right: "$", display: false},
                         {left: "\\[", right: "\\]", display: true},
                         {left: "\\(", right: "\\)", display: false},
+                        {left: "\\(", right: "\\)", display: true},
                     ],
                     throwOnError: false,
                 });
             }
-    }, []);
+    }, [content, containerRef, scale]);
 
     return (
         <div
