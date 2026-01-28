@@ -74,7 +74,7 @@ export function StartPage() {
                             kims?.kims?.map((kim, idx) => (
                                 <Card key={idx}>
                                     <CardHeader>
-                                        <CardTitle>{kim.id}</CardTitle>
+                                        <CardTitle>{kim.name}</CardTitle>
                                         <CardDescription>{kim.description}</CardDescription>
                                         <CardAction>
                                             <Button asChild>
@@ -87,7 +87,7 @@ export function StartPage() {
                                     </CardContent>
                                     <CardFooter className="flex flex-col">
                                         <p>{kim.creator}</p>
-                                        <p>{kim.createdAt}</p>
+                                        {/*<p>{(new Date(kim.createdAt)).toUTCString()}</p>*/}
                                     </CardFooter>
                                 </Card>
                             ))
