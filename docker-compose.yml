@@ -1,8 +1,8 @@
 name: kege-station
 
 services:
-  postgres-db:
-    container_name: postgres
+  postgres:
+    container_name: kege-station-postgres
     image: postgres:18-alpine
     restart: unless-stopped
     environment:
@@ -36,7 +36,7 @@ services:
     networks:
       - kege-station-network
     depends_on:
-      postgres-db:
+      postgres:
         condition: service_healthy
       s3:
         condition: service_healthy

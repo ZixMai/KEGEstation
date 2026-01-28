@@ -8,7 +8,8 @@ import "./src/env.js";
 const config = {
     images: {
         remotePatterns: [new URL("https://kompege.ru/images/*")]
-    }
+    },
+    output: "standalone"
 };
 
 export default config;
