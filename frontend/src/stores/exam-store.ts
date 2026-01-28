@@ -101,6 +101,7 @@ export const useExamStore = create<ExamState>()((set, get) => ({
         const {kimData} = get();
         if (kimData) {
             kimData.realMode = false;
+            setLocalStorage(kimData);
             set({kimData});
         }
     },
