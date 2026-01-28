@@ -448,7 +448,7 @@ export function Registration() {
                         <div className="text-center text-sm text-gray-400">
                             <CircleAlert />
                             <p>Код активации сообщает организатор в аудитории.</p>
-                            <p>В режиме имитации введите 1597</p>
+                            {/*<p>В режиме имитации введите 1597</p>*/}
                         </div>
 
                         <div className="flex gap-4 items-center justify-center">
@@ -465,7 +465,7 @@ export function Registration() {
                             />
                             <Button
                                 onClick={handleStart}
-                                disabled={activationCode !== "1597"}
+                                disabled={activationCode !== kimData?.unlockCode}
                                 className="px-8 py-3 text-lg bg-cyan-600 hover:bg-cyan-700 disabled:bg-gray-600 disabled:cursor-not-allowed"
                             >
                                 Начать экзамен

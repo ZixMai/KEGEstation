@@ -42,7 +42,7 @@ export function ExamShell() {
     }, [handleNext, handlePrev]);
 
     return (
-        <div className="flex flex-col h-screen" tabIndex={0}>
+        <div className="flex flex-col h-screen overflow-hidden" tabIndex={0}>
             <div className="border-b">
                 <ExamHeader/>
             </div>
@@ -103,7 +103,7 @@ export function ExamShell() {
                                     </Button>
                                 </div>
 
-                                <div className="flex p-4 overflow-auto">
+                                <div className="flex flex-1 p-4 overflow-auto">
                                     <ExamTask scale={scale}/>
                                 </div>
 
