@@ -57,6 +57,23 @@ services:
       kege-station.presentation:
         condition: service_started
   
+  caddy:
+    image: caddy:2.11-alpine
+    container_name: kege-station-caddy
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - kege-station-network
+  
   s3:
     security_opt:
       - "no-new-privileges:true"
@@ -97,7 +114,9 @@ volumes:
   rustfs-data:
   rustfs-logs:
   kege-station-postgres-data:
-
+  caddy_data:
+  caddy_config:
+    
 networks:
   kege-station-network:
     driver: bridge

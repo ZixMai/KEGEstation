@@ -116,7 +116,7 @@ public class GetEndpoint(
                         Text: taskLink.Task.Text,
                         ImageS3Keys: JsonConverter.MapJsonToCollection<File>(taskLink.Task.ImageS3Keys),
                         FileS3Keys: JsonConverter.MapJsonToCollection<File>(taskLink.Task.FileS3Keys)
-                    )).ToList(),
+                    )).OrderBy(t => t.Number ?? 0).ThenBy(t => t.Id).ToList(),
                 UserId: user.Id, 
                 Base64Images: images),
         ct);
