@@ -1,5 +1,5 @@
 kege-station.ru {
-    reverse_proxy telegram-bot-prod:8080 {
+    reverse_proxy kege-station-front:3000 {
         header_up Host {host}
         header_up X-Real-IP {remote_host}
     }
