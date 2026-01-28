@@ -4,3 +4,10 @@ kege-station.ru {
         header_up X-Real-IP {remote_host}
     }
 }
+
+api.kege-station.ru {
+    reverse_proxy kege-station-app:8080 {
+        header_up Host {host}
+        header_up X-Real-IP {remote_host}
+    }
+}
