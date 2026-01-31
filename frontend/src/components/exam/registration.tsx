@@ -198,7 +198,7 @@ export function Registration() {
                 <div className="flex flex-col justify-between space-y-8 grow mt-10">
                     <div className="text-black rounded-lg overflow-hidden">
 
-                        <div className="p-8 min-h-[500px] flex items-center justify-center relative">
+                        <div className="min-h-[500px] flex items-center justify-center relative">
                             {/* Левая стрелка */}
                             {instructionIndex > 0 && (
                                 <button
@@ -210,9 +210,7 @@ export function Registration() {
                             )}
 
                             {/* Контент */}
-                            <div className="">
-                                <Image src={instructionPictures[instructionIndex]!} alt="" width={1200} height={1200}/>
-                            </div>
+                            <img className="w-[60%]" src={instructionPictures[instructionIndex]!} alt=""/>
 
                             {/* Правая стрелка */}
                             {!isLastInstruction && (
@@ -228,7 +226,7 @@ export function Registration() {
 
                     {/* Кнопка Далее появляется на последней странице */}
                     {isLastInstruction && (
-                        <div className="flex justify-end">
+                        <div className="absolute flex bottom-4 right-4">
                             <Button
                                 onClick={() => setStage(3)}
                                 className="px-8 py-3 text-lg bg-cyan-600 hover:bg-cyan-700"

@@ -228,3 +228,11 @@
     @apply bg-background text-foreground;
 	}
 }
+
+/* Изображения в заданиях */
+.prose img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  position: relative;
+}

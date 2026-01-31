@@ -1,7 +1,7 @@
 "use client";
 
 import {Suspense, useEffect, useState} from "react";
-import {useSearchParams} from "next/navigation";
+import {redirect, useSearchParams} from "next/navigation";
 import {useExamStore} from "@/stores/exam-store";
 import {useUserStore} from "@/stores/user-store";
 import {ExamShell} from "@/components/exam/exam-shell";
@@ -30,6 +30,8 @@ function VariantContent() {
                         window.location.href = "/";
                     }
                 });
+        } else {
+            redirect(`register?kim=${searchParams.get("kim")}`)
         }
     }, [searchParams, loadKim, user, loadUser]);
 

@@ -72,7 +72,7 @@ export function ExamShell() {
                                             title="Сброс масштаба"
                                             className="w-12 h-12"
                                         >
-                                            ⟲
+                                            <RotateCcw />
                                         </Button>
                                         <Button
                                             variant="outline"
@@ -81,7 +81,7 @@ export function ExamShell() {
                                             title="Увеличить"
                                             className="w-12 h-12"
                                         >
-                                            +
+                                            <Plus/>
                                         </Button>
                                         <Button
                                             variant="outline"
@@ -90,7 +90,7 @@ export function ExamShell() {
                                             title="Уменьшить"
                                             className="w-12 h-12"
                                         >
-                                            -
+                                            <Minus/>
                                         </Button>
                                     </div>
                                     <Button

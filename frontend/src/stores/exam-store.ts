@@ -1,4 +1,5 @@
 import {create} from "zustand";
+import {persist} from "zustand/middleware";
 import {SCALE} from "@/lib/constants";
 import rateAnswers from "@/lib/score";
 import type {GetKimResponse, KimTask} from "@/api";
@@ -12,6 +13,7 @@ const getLocalStorage = (): GetKimResponse | null => {
     return data ? JSON.parse(data) : null;
 };
 const removeLocalStorage = () => localStorage.removeItem("kimData");
+const removeExamSession = () => localStorage.removeItem("exam-session");
 
 const getPrimaryScore = (tasks: KimTask[]) =>
     tasks.reduce((acc, el) => acc + el.score, 0);
@@ -41,77 +43,80 @@ interface ExamState {
     sendResult: (isVariant: boolean) => Promise<void>;
 }
 
-export const useExamStore = create<ExamState>()((set, get) => ({
-    kimData: null,
-    index: null,
-    showResult: false,
-    blankNumber: "",
-    endExam: false,
-    isTransfered: false,
-
-    updateKimData: () => {
-        const kimData = getLocalStorage();
-        set({kimData});
-    },
-
-    saveTasks: (data) => {
-        setLocalStorage(data);
-        set({
-            kimData: data,
-            showResult: false,
-            endExam: false,
+export const useExamStore = create<ExamState>()(
+    persist(
+        (set, get) => ({
+            kimData: null,
             index: null,
-        });
-    },
+            showResult: false,
+            blankNumber: "",
+            endExam: false,
+            isTransfered: false,
 
-    setIndex: (index) => set({index}),
+            updateKimData: () => {
+                const kimData = getLocalStorage();
+                set({kimData});
+            },
 
-    setBlankNumber: (blankNumber) => set({blankNumber}),
+            saveTasks: (data) => {
+                setLocalStorage(data);
+                set({
+                    kimData: data,
+                    showResult: false,
+                    endExam: false,
+                    index: null,
+                });
+            },
 
-    setAnswer: (answer) => {
-        const {kimData, index} = get();
-        if (!kimData || index === null) return;
+            setIndex: (index) => set({index}),
 
-        const task = kimData.tasksForKim[index];
-        if (task) {
-            task.answer = answer;
-            setLocalStorage(kimData);
-            set({kimData: {...kimData}});
-        }
-    },
+            setBlankNumber: (blankNumber) => set({blankNumber}),
 
-    nextIndex: () => {
-        const {index, kimData} = get();
-        if (!kimData) return;
-        if (index === kimData.tasksForKim.length - 1) return;
-        set({index: index === null ? 0 : index + 1});
-    },
+            setAnswer: (answer) => {
+                const {kimData, index} = get();
+                if (!kimData || index === null) return;
 
-    prevIndex: () => {
-        const {index} = get();
-        if (index === null) return;
-        set({index: index === 0 ? null : index - 1});
-    },
+                const task = kimData.tasksForKim[index];
+                if (task) {
+                    task.answer = answer;
+                    setLocalStorage(kimData);
+                    set({kimData: {...kimData}});
+                }
+            },
 
-    backToTask: (index) => {
-        set({showResult: false, index});
-    },
+            nextIndex: () => {
+                const {index, kimData} = get();
+                if (!kimData) return;
+                if (index === kimData.tasksForKim.length - 1) return;
+                set({index: index === null ? 0 : index + 1});
+            },
 
-    startExam: () => {
-        const {kimData} = get();
-        if (kimData) {
-            kimData.realMode = false;
-            setLocalStorage(kimData);
-            set({kimData});
-        }
-    },
+            prevIndex: () => {
+                const {index} = get();
+                if (index === null) return;
+                set({index: index === 0 ? null : index - 1});
+            },
 
-    endExamAction: () => {
-        removeLocalStorage();
-        const {kimData} = get();
-        rateAnswers(kimData!.tasksForKim);
-        set({showResult: true, endExam: true});
-    },
+            backToTask: (index) => {
+                set({showResult: false, index});
+            },
+
+            startExam: () => {
+                const {kimData} = get();
+                if (kimData) {
+                    kimData.realMode = false;
+                    setLocalStorage(kimData);
+                    set({kimData});
+                }
+            },
+
+            endExamAction: () => {
+                removeLocalStorage();
+                removeExamSession();
+                const {kimData} = get();
+                rateAnswers(kimData!.tasksForKim);
+                set({showResult: true, endExam: true, index: null, blankNumber: ""});
+            },
 
     // updateTimer: () => {
     //   const { kimData } = get();
@@ -222,7 +227,16 @@ export const useExamStore = create<ExamState>()((set, get) => ({
             console.error("Failed to send result:", error);
         }
     },
-}));
+        }),
+        {
+            name: "exam-session",
+            partialize: (state) => ({
+                index: state.index,
+                blankNumber: state.blankNumber,
+            }),
+        }
+    )
+);
 
 // Selector for current task
 export const useCurrentTask = () => {
