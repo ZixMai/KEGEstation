@@ -31,7 +31,9 @@ function VariantContent() {
                     }
                 });
         } else {
-            redirect(`register?kim=${searchParams.get("kim")}`)
+            if (!showResult) {
+                redirect(`register?kim=${searchParams.get("kim")}`)
+            }
         }
     }, [searchParams, loadKim, user, loadUser]);
 
