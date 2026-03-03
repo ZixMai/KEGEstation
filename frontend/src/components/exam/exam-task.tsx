@@ -38,8 +38,8 @@ export function ExamTask({ scale }: { scale: number }) {
       {/*)}*/}
 
       {taskContent && (
-        <div className="prose dark:prose-invert max-w-none">
-          <LatexWrapper content={taskContent} className="break-normal max-h-screen"scale={scale} />
+        <div className="prose dark:prose-invert max-w-none overflow-visible">
+          <LatexWrapper content={taskContent} className="break-normal" scale={scale} />
         </div>
       )}
 

@@ -54,7 +54,7 @@ export function Result() {
                 <div className="flex justify-between">
                   <span>Дано ответов:</span>
                   <span className="font-bold">
-                    {kimData.tasksForKim.filter((t) => t.answer !== "").length}
+                    {kimData.tasksForKim.filter((t) => t.answer && t.answer !== "").length}
                   </span>
                 </div>
                 <div className="flex justify-between">

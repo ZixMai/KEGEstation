@@ -11,7 +11,6 @@ function RegisterContent() {
 
     if (user) {
         redirect(`variant?kim=${params.get("kim")}`)
-        return;
     }
 
     return (<div className="h-screen flex flex-row justify-center items-center w-full"><ExamForm/></div>);
