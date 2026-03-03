@@ -16,13 +16,12 @@ public class GetAllEndpoint(
 {
     public override void Configure()
     {
-        Post("/getAll");
+        Get("/getAll");
         Group<KimGroup>();
         AllowAnonymous();
         
         Description(b => b
-            .WithName("GetAll")
-            .WithTags(RouteGroups.Kim)
+            .WithName("GetAllKims")
             .Produces<GetAllKimResponse>());
     }
 

@@ -20,9 +20,7 @@ public class CreateResultEndpoint(
         Group<KimGroup>();
         AllowAnonymous();
         
-        Description(b => b
-            .WithName("CreateResult")
-            .WithTags(RouteGroups.Kim));
+        Description(b => b.WithName("CreateResult"));
     }
     
     internal sealed class Validator : Validator<CreateResultRequest>

@@ -8,7 +8,15 @@ public class KimTaskRepository(DbContext context) : IKimTaskRepository
 {
     public async Task<KimTask?> GetByIdAsync(long id, CancellationToken ct = default)
     {
-        return await context.KimTasks.FirstOrDefaultAsync(t => t.Id == id, ct);
+        return await context.KimTasks
+            .Include(k => k.KimsForTask)
+            .Include(k => k.Creator)
+            .FirstOrDefaultAsync(t => t.Id == id, ct);
+    }
+    
+    public async Task<List<KimTask>> GetAllAsync(CancellationToken ct = default)
+    {
+        return await context.KimTasks.ToListAsync(ct);
     }
 
     public async Task<KimTask> CreateAsync(KimTask task, CancellationToken ct = default)

@@ -24,7 +24,6 @@ public class RegisterEndpoint(
         
         Description(b => b
             .WithName("Register")
-            .WithTags(RouteGroups.Auth)
             .Produces<TokenResponse>());
     }
     

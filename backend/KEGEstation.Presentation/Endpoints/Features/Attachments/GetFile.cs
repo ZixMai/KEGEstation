@@ -7,7 +7,7 @@ using KEGEstation.Presentation.Groups;
 using FastEndpoints;
 using FluentValidation;
 
-namespace KEGEstation.Presentation.Endpoints.Features.Kim;
+namespace KEGEstation.Presentation.Endpoints.Features.Attachments;
 
 
 public class GetFileEndpoint(
@@ -17,12 +17,10 @@ public class GetFileEndpoint(
     public override void Configure()
     {
         Get("/getFile/{S3Key}");
-        Group<KimGroup>();
+        Group<AttachmentGroup>();
         AllowAnonymous();
 
-        Description(b => b
-            .WithName("GetFile")
-            .WithTags(RouteGroups.Kim));
+        Description(b => b.WithName("GetFile"));
     }
 
     public override async Task HandleAsync(GetFileRequest req, CancellationToken ct)

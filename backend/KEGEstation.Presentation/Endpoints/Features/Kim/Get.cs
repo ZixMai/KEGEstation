@@ -25,8 +25,7 @@ public class GetEndpoint(
         AllowAnonymous();
         
         Description(b => b
-            .WithName("Get")
-            .WithTags(RouteGroups.Kim)
+            .WithName("GetKim")
             .Produces<GetKimResponse>());
     }
     
@@ -114,7 +113,7 @@ public class GetEndpoint(
                             ? null :
                             new Table(Rows: taskLink.Task.AnswerRowsSize, Columns: taskLink.Task.AnswerColumnsSize),
                         Text: taskLink.Task.Text,
-                        ImageS3Keys: JsonConverter.MapJsonToCollection<File>(taskLink.Task.ImageS3Keys),
+                        EditorJson: taskLink.Task.EditorJson,
                         FileS3Keys: JsonConverter.MapJsonToCollection<File>(taskLink.Task.FileS3Keys)
                     )).OrderBy(t => t.Number ?? 0).ThenBy(t => t.Id).ToList(),
                 UserId: user.Id, 
@@ -145,7 +144,7 @@ public sealed record GetKimTaskResponse(
     string Key,
     Table? Table,
     string Text,
-    List<File> ImageS3Keys,
+    string EditorJson,
     List<File> FileS3Keys
 );
 

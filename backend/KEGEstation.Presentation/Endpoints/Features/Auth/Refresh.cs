@@ -23,7 +23,6 @@ public class RefreshEndpoint(
         
         Description(b => b
             .WithName("Refresh")
-            .WithTags(RouteGroups.Auth)
             .Produces<TokenResponse>());
     }
 

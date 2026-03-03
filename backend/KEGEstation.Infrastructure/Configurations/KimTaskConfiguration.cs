@@ -25,8 +25,8 @@ public class KimTaskConfiguration : IEntityTypeConfiguration<KimTask>
             .HasColumnType("text")
             .IsRequired();
 
-        builder.Property(t => t.ImageS3Keys)
-            .HasColumnName("image_s3_keys")
+        builder.Property(t => t.EditorJson)
+            .HasColumnName("editor_json")
             .HasColumnType("jsonb")
             .HasDefaultValueSql("'[]'::jsonb")
             .IsRequired();

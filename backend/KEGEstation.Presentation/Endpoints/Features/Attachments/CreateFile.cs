@@ -8,7 +8,7 @@ using FastEndpoints;
 using FluentValidation;
 using KEGEstation.Domain.Utils;
 
-namespace KEGEstation.Presentation.Endpoints.Features.Kim;
+namespace KEGEstation.Presentation.Endpoints.Features.Attachments;
 
 
 public class CreateFileEndpoint(
@@ -18,12 +18,10 @@ public class CreateFileEndpoint(
     public override void Configure()
     {
         Post("/createFile");
-        Group<KimGroup>();
+        Group<AttachmentGroup>();
         AllowFileUploads();
         
-        Description(b => b
-            .WithName("CreateFile")
-            .WithTags(RouteGroups.Kim));
+        Description(b => b.WithName("CreateFile"));
     }
 
     public override async Task HandleAsync(CreateFileRequest req, CancellationToken ct)

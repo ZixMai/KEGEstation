@@ -12,20 +12,15 @@ namespace KEGEstation.Presentation.Endpoints.Features.Kim;
 
 
 public class CreateEndpoint(
-    IKimTaskRepository kimTaskRepository,
-    IKimRepository kimRepository,
-    IAmazonS3 s3Client
+    IKimRepository kimRepository
 ) : Endpoint<CreateKimRequest>
 {
     public override void Configure()
     {
         Post("/create");
         Group<KimGroup>();
-        AllowFileUploads();
         
-        Description(b => b
-            .WithName("Create")
-            .WithTags(RouteGroups.Kim));
+        Description(b => b.WithName("CreateKim"));
     }
 
     public override async Task HandleAsync(CreateKimRequest req, CancellationToken ct)

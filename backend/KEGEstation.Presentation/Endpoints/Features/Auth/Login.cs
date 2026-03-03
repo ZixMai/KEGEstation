@@ -23,7 +23,6 @@ public class LoginEndpoint(
         
         Description(b => b
             .WithName("Login")
-            .WithTags(RouteGroups.Auth)
             .Produces<TokenResponse>());
     }
     

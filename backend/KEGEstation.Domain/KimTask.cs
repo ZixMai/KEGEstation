@@ -11,7 +11,7 @@ public class KimTask
     
     public string Text { get; set; } = string.Empty;
     
-    public string ImageS3Keys { get; set; } = "[]";
+    public string EditorJson { get; set; } = "[]";
     public string FileS3Keys { get; set; } = "[]";
     
     public short? Number { get; set; }

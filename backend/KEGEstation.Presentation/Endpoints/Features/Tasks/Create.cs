@@ -8,7 +8,7 @@ using FastEndpoints;
 using KEGEstation.Domain.Utils;
 using File = KEGEstation.Domain.File;
 
-namespace KEGEstation.Presentation.Endpoints.Features.Kim;
+namespace KEGEstation.Presentation.Endpoints.Features.Tasks;
 
 
 public class CreateTaskEndpoint(
@@ -19,12 +19,10 @@ public class CreateTaskEndpoint(
     public override void Configure()
     {
         Post("/createTask");
-        Group<KimGroup>();
+        Group<TaskGroup>();
         AllowFileUploads();
         
-        Description(b => b
-            .WithName("CreateTask")
-            .WithTags(RouteGroups.Kim));
+        Description(b => b.WithName("CreateTask"));
     }
 
     public override async Task HandleAsync(CreateTaskRequest req, CancellationToken ct)
@@ -35,11 +33,11 @@ public class CreateTaskEndpoint(
         {
             CreatorId = userId,
             Text = req.Text,
+            EditorJson = req.EditorJson,
             Number = req.Number,
             Key = req.Key,
             AnswerColumnsSize = req.AnswerColumnsSize,
-            AnswerRowsSize = req.AnswerRowsSize,
-            ImageS3Keys = JsonConverter.MapCollectionToJson(req.ImageS3Keys)
+            AnswerRowsSize = req.AnswerRowsSize
         };
 
         var fileS3Keys = new List<File>();
@@ -72,11 +70,11 @@ public class CreateTaskEndpoint(
 
 public sealed record CreateTaskRequest(
     string Text,
+    string EditorJson,
     short Number,
     string Key,
     short AnswerColumnsSize,
     short AnswerRowsSize,
-    List<File>? ImageS3Keys,
     List<IFormFile>? Files
 );
 
