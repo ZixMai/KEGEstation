@@ -2,6 +2,7 @@
 
 import {useEffect} from "react";
 import {isServer, QueryClient, QueryClientProvider,} from '@tanstack/react-query'
+import { TooltipProvider } from '@/components/ui/tooltip';
 import "@/lib/axios"; // Initialize axios
 
 function makeQueryClient() {
@@ -40,5 +41,9 @@ export function Providers({children}: { children: React.ReactNode }) {
         import("@/lib/axios");
     }, []);
 
-    return (<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>);
+    return (
+        <QueryClientProvider client={queryClient}>
+            <TooltipProvider>{children}</TooltipProvider>
+        </QueryClientProvider>
+    );
 }
