@@ -34,7 +34,7 @@ public class DeleteTaskEndpoint(
             return;
         }
 
-        if (kimTask.CreatorId != userId || role == Role.STUDENT || role == Role.TEACHER)
+        if (role != Role.ADMIN && (kimTask.CreatorId != userId || role == Role.STUDENT || role == Role.TEACHER))
         {
             await Send.ForbiddenAsync(ct);
             return;

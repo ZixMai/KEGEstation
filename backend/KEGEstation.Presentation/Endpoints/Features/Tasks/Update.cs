@@ -36,13 +36,12 @@ public class UpdateEndpoint(
             await Send.NotFoundAsync(ct);
             return;
         }
-        if (kimTask.CreatorId != userId || role == Role.STUDENT || role == Role.TEACHER)
+        if (role != Role.ADMIN && (kimTask.CreatorId != userId || role == Role.STUDENT || role == Role.TEACHER))
         {
             await Send.ForbiddenAsync(ct);
             return;
         }
 
-        var fileS3Keys = new List<File>();
         foreach (var file in req.NewFiles ?? [])
         {
             using var memoryStream = new MemoryStream();
@@ -62,21 +61,15 @@ public class UpdateEndpoint(
             await s3Client.PutObjectAsync(putRequest, ct);
         }
         
-        var newKimTask = new KimTask
-        {
-            Id = req.TaskId,
-            CreatorId = userId,
-            Creator = kimTask.Creator,
-            Text = req.Text,
-            EditorJson = req.EditorJson,
-            AnswerRowsSize = req.AnswerRowsSize,
-            AnswerColumnsSize = req.AnswerColumnsSize,
-            Number = req.Number,
-            Key = req.Key,
-            KimsForTask = kimTask.KimsForTask,
-            FileS3Keys = JsonConverter.MapCollectionToJson(req.FileS3Keys)
-        };
-        await kimTaskRepository.UpdateAsync(newKimTask, ct);
+        kimTask.Text = req.Text;
+        kimTask.EditorJson = req.EditorJson;
+        kimTask.AnswerRowsSize = req.AnswerRowsSize;
+        kimTask.AnswerColumnsSize = req.AnswerColumnsSize;
+        kimTask.Number = req.Number;
+        kimTask.FileS3Keys = JsonConverter.MapCollectionToJson(req.FileS3Keys);
+        kimTask.Key = req.Key;
+        
+        await kimTaskRepository.UpdateAsync(kimTask, ct);
         
         await Send.NoContentAsync(ct);
     }
