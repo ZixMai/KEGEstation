@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
+import {toast} from "sonner";
 
 const kimSchema = z.object({
   name: z.string().min(1, "Название обязательно"),
@@ -78,8 +79,10 @@ export function KimEditor() {
         tasks: Array.from(selectedTaskIds),
       });
       setSubmitSuccess(true);
+      toast.success("Новый вариант был успешно создан")
       setTimeout(() => router.push("/admin/kims"), 1000);
     } catch (error) {
+      toast.error(`Произошла ошибка при создании варианта ${error}`)
       console.error("Failed to create KIM:", error);
     } finally {
       setIsSubmitting(false);

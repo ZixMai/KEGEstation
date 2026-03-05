@@ -40,6 +40,7 @@ import {
 
 import { TaskEditorKit } from "./plugins/task-editor-kit";
 import { TaskEditorToolbar } from "./task-editor-toolbar";
+import {toast} from "sonner";
 
 const taskSchema = z.object({
   number: z.coerce.number().min(1, "Номер задания обязателен"),
@@ -112,11 +113,13 @@ export function TaskEditor({ task }: TaskEditorProps) {
           formData.append("NewFiles", file);
         }
         await updateTask.mutateAsync(formData);
+        toast.success("Задание было успешно обновлено")
       } else {
         for (const file of files) {
           formData.append("Files", file);
         }
         await createTask.mutateAsync(formData);
+        toast.success("Задание было успешно создано")
       }
 
       setSubmitSuccess(true);
@@ -124,6 +127,7 @@ export function TaskEditor({ task }: TaskEditorProps) {
         setFiles([]);
       }
     } catch (error) {
+      toast.error(`Что-то пошло не так ${error}`);
       console.error("Failed to save task:", error);
     } finally {
       setIsSubmitting(false);
@@ -134,8 +138,10 @@ export function TaskEditor({ task }: TaskEditorProps) {
     if (!task) return;
     try {
       await deleteTask.mutateAsync(task.id);
+      toast.success("Задание было успешно удалено")
       router.push("/admin/tasks");
     } catch (error) {
+      toast.error(`Что-то пошло не так ${error}`);
       console.error("Failed to delete task:", error);
     }
   };

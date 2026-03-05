@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import apiClient from "@/lib/axios";
 
 export type GetKimRequest = {
@@ -87,7 +87,7 @@ export function useGetKim(getKimRequest: GetKimRequest) {
     queryFn: async () =>
       await apiClient.post<GetKimResponse>("kim/get", getKimRequest),
     queryKey: [
-      `${process.env.NEXT_PUBLIC_API_URL}/kim/get/${getKimRequest.kimId}`,
+      `kim/get/${getKimRequest.kimId}`,
     ],
   });
 }
@@ -96,7 +96,7 @@ export function useGetAllKims() {
   return useQuery({
     queryFn: async () =>
       (await apiClient.get<GetAllKimsResponse>("kim/getAll")).data,
-    queryKey: [`${process.env.NEXT_PUBLIC_API_URL}/kim/getAll`],
+    queryKey: ["kim/getAll"],
   });
 }
 
@@ -123,6 +123,8 @@ export type GetAllTasksItem = {
 };
 
 export function useCreateTask() {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async (formData: FormData) => {
       const response = await apiClient.post<CreateTaskResponse>(
@@ -134,6 +136,11 @@ export function useCreateTask() {
       );
       return response.data;
     },
+      onSuccess: async (data: CreateTaskResponse) => {
+            await queryClient.invalidateQueries({
+                queryKey: ["tasks/getAllTasks"]
+            })
+      }
   });
 }
 
@@ -146,24 +153,40 @@ export function useGetAllTasks() {
 }
 
 export function useUpdateTask() {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async (formData: FormData) => {
       await apiClient.put("tasks/updateTask", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
     },
+    onSuccess: async () => {
+          await queryClient.invalidateQueries({
+              queryKey: ["tasks/getAllTasks"]
+          })
+      }
   });
 }
 
 export function useDeleteTask() {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async (taskId: number) => {
       await apiClient.delete("tasks/deleteTask", { data: { taskId } });
     },
+      onSuccess: async () => {
+          await queryClient.invalidateQueries({
+              queryKey: ["tasks/getAllTasks"]
+          })
+      }
   });
 }
 
 export function useCreateKim() {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async (data: {
       name: string;
@@ -174,5 +197,10 @@ export function useCreateKim() {
     }) => {
       await apiClient.post("kim/create", data);
     },
+      onSuccess: async () => {
+          await queryClient.invalidateQueries({
+              queryKey: ["kim/getAll"]
+          })
+      }
   });
 }
