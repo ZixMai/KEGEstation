@@ -8,7 +8,8 @@ import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FileIcon, Trash2Icon, UploadIcon } from "lucide-react";
-import { serializeHtml } from 'platejs/static';
+import { createStaticEditor, serializeHtml } from 'platejs/static';
+import { TaskEditorBaseKit } from "./plugins/task-editor-base-kit";
 
 import {
   type GetAllTasksItem,
@@ -97,7 +98,12 @@ export function TaskEditor({ task }: TaskEditorProps) {
 
     try {
       const editorJson = JSON.stringify(editor.children);
-      const plainText = await serializeHtml(editor)
+      const staticEditor = createStaticEditor({
+          plugins: TaskEditorBaseKit,
+          value: editor.children,
+      });
+
+      const plainText = await serializeHtml(staticEditor)
 
       const formData = new FormData();
       formData.append("Text", plainText);

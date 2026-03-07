@@ -524,12 +524,16 @@ export function TableCellElement({
   const readOnly = useReadOnly();
   const element = props.element;
 
-  const tableId = useElementSelector(([node]) => node.id as string, [], {
-    key: KEYS.table,
-  });
-  const rowId = useElementSelector(([node]) => node.id as string, [], {
-    key: KEYS.tr,
-  });
+    const tableId = useElementSelector(
+        (entry) => (entry as any)?.[0]?.id as string,
+        [],
+        { key: KEYS.table },
+    );
+    const rowId = useElementSelector(
+        (entry) => (entry as any)?.[0]?.id as string,
+        [],
+        { key: KEYS.tr },
+    );
   const isSelectingTable = useBlockSelected(tableId);
   const isSelectingRow = useBlockSelected(rowId) || isSelectingTable;
   const isSelectionAreaVisible = usePluginOption(
