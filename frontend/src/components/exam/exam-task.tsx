@@ -56,7 +56,7 @@ export function ExamTask({ scale }: { scale: number }) {
             {task.fileS3Keys.map((file, index) => (
               <a
                 key={index}
-                href={`${process.env.NEXT_PUBLIC_API_URL}attachment/getFile/${file.url}`}
+                href={`${process.env.NEXT_PUBLIC_API_URL}attachments/getFile/${file.url}`}
                 download={file.name}
                 className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors"
               >
